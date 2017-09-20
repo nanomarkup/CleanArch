@@ -34,11 +34,21 @@ namespace TestEntities
             return fixture.Provider.GetService<IDataEntity>();
         }
 
+        DtoDataEntity CreateDtoDataEntity()
+        {
+            return new DtoDataEntity()
+            {
+                Id = Guid.NewGuid(),
+                Created = DateTime.Now,
+                Modified = DateTime.Now
+            };
+        }
+
         [Fact]
         public void TestEmptyObject()
         {
             var data = CreateDataEntity();
-            Assert.True(data.Id == null);
+            Assert.Equal(default(Guid?), data.Id);
             Assert.Equal(default(DateTime), data.Created);
             Assert.Equal(default(DateTime), data.Modified);
         }
@@ -58,11 +68,25 @@ namespace TestEntities
         public void TestInitialization()
         {
             var data = CreateDataEntity();
-            var dtoData = new DtoDataEntity() { Id = Guid.NewGuid(), Created = DateTime.Now, Modified = DateTime.Now };
+            var dtoData = CreateDtoDataEntity();
             data.Initialize(dtoData);
             Assert.True(data.Id == dtoData.Id);
             Assert.Equal(dtoData.Created, data.Created);
             Assert.Equal(dtoData.Modified, data.Modified);
+        }
+
+        [Fact]
+        public void TestIsModified()
+        {
+            var data = CreateDataEntity();
+            var dtoData = CreateDtoDataEntity();
+            data.Initialize(dtoData);
+
+            Assert.False(data.IsModified());
+            data.BeginUpdate();
+            Assert.False(data.IsModified());
+            data.EndUpdate();
+            Assert.False(data.IsModified());
         }
 
         [Fact]
@@ -72,6 +96,7 @@ namespace TestEntities
             var isPropertyChanged = false;
             data.Create();
             data.PropertyChanged += (sender, args) => { isPropertyChanged = true; };
+
             data.BeginUpdate();
             Assert.False(data.IsModified());
             data.EndUpdate();

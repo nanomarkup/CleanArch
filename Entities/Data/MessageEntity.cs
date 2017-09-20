@@ -7,29 +7,30 @@ namespace Entities
     {
         Guid sender;
         Guid receiver;
+        string text;
         public Guid Sender { get { return sender; } }
         public Guid Receiver { get { return receiver; } }
         public string Text
         {
-            get { return this.Text; }
+            get { return text; }
             set
             {
-                this.Text = (string.IsNullOrEmpty(value)) ? throw new ArgumentException("Text is empty.", nameof(Text)) : value;
+                text = (string.IsNullOrEmpty(value)) ? throw new ArgumentException("Text is empty.", nameof(Text)) : value;
                 Changed(nameof(Text));
             }
         }
 
         public Guid Create(DtoMessageEntity messageEntity)
-        {
-            base.Create();
+        {            
             Initialize(messageEntity);
+            base.Create();
             return Id.Value;
         }
 
         public void Initialize(DtoDataEntity dataEntity, DtoMessageEntity messageEntity)
-        {
+        {            
+            Initialize(messageEntity);
             base.Initialize(dataEntity);
-            Initialize(messageEntity);            
         }
 
         public bool Send()
@@ -40,9 +41,9 @@ namespace Entities
 
         void Initialize(DtoMessageEntity messageEntity)
         {
-            this.sender = (messageEntity.Sender == Guid.Empty) ? throw new ArgumentException("GUID value is empty.", nameof(messageEntity.Sender)) 
+            sender = (messageEntity.Sender == Guid.Empty) ? throw new ArgumentException("GUID value is empty.", nameof(messageEntity.Sender)) 
                 : messageEntity.Sender;
-            this.receiver = (messageEntity.Receiver == Guid.Empty) ? throw new ArgumentException("GUID value is empty.", nameof(messageEntity.Receiver)) 
+            receiver = (messageEntity.Receiver == Guid.Empty) ? throw new ArgumentException("GUID value is empty.", nameof(messageEntity.Receiver)) 
                 : messageEntity.Receiver;
             Text = messageEntity.Text;
         }

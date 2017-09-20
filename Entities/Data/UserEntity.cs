@@ -4,48 +4,52 @@ using Core.Entities;
 namespace Entities
 {
     public class UserEntity : DataEntity, IUserEntity
-    {        
+    {
+        string firstName;
+        string lastName;
+        string email;
+
         public string FirstName
         {
-            get { return this.FirstName; }
+            get { return firstName; }
             set
             {
-                this.FirstName = (string.IsNullOrEmpty(value)) ? throw new ArgumentException("First Name is empty.", nameof(FirstName)) : value;
+                firstName = (string.IsNullOrEmpty(value)) ? throw new ArgumentException("First Name is empty.", nameof(FirstName)) : value;
                 Changed(nameof(FirstName));
             }
         }
 
         public string LastName
         {
-            get { return this.LastName; }
+            get { return lastName; }
             set
             {
-                this.LastName = (string.IsNullOrEmpty(value)) ? throw new ArgumentException("Last Name is empty.", nameof(LastName)) : value;
+                lastName = (string.IsNullOrEmpty(value)) ? throw new ArgumentException("Last Name is empty.", nameof(LastName)) : value;
                 Changed(nameof(LastName));
             }
         }
 
         public string Email
         {
-            get { return this.Email; }
+            get { return email; }
             set
             {
-                this.Email = (string.IsNullOrEmpty(value)) ? throw new ArgumentException("Email address is empty.", nameof(Email)) : value;
+                email = (string.IsNullOrEmpty(value)) ? throw new ArgumentException("Email address is empty.", nameof(Email)) : value;
                 Changed(nameof(Email));
             }
         }
 
         public Guid Create(DtoUserEntity userEntity)
         {
-            base.Create();
             Initialize(userEntity);
+            base.Create();            
             return Id.Value;
         }
 
         public void Initialize(DtoDataEntity dataEntity, DtoUserEntity userEntity)
         {
-            base.Initialize(dataEntity);
             Initialize(userEntity);
+            base.Initialize(dataEntity);            
         }
 
         void Initialize(DtoUserEntity userEntity)

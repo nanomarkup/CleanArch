@@ -12,7 +12,7 @@ namespace Core.Entities
 
     public interface IDataEntity : INotifyPropertyChanged
     {        
-        // Identification, read only
+        // Identification, read only  
         Guid? Id { get; }
         // Created date, read only
         DateTime Created { get; }
@@ -22,11 +22,11 @@ namespace Core.Entities
         Guid Create();
         // Uses for initializing/loading entity
         void Initialize(DtoDataEntity dataEntity);
-        // Lock the notification of PropertyChanged event
+        // Lock the performing of PropertyChanged event
         void BeginUpdate();
-        // Unlock the notification of PropertyChanged event
+        // Unlock the performing of PropertyChanged event
         void EndUpdate();
-        // Get state of object
+        // Is object modified
         bool IsModified();
     }
 }
