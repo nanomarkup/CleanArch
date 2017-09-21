@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Servic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{C3CF6104-62EC-4529-A450-E7C06427B041}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestEntities", "Tests\TestEntities\TestEntities.csproj", "{5C1298AE-1073-4DD7-9214-7C9B31AE397E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestEntities", "Tests\TestEntities\TestEntities.csproj", "{5C1298AE-1073-4DD7-9214-7C9B31AE397E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestInteractors", "Tests\TestInteractors\TestInteractors.csproj", "{FAF998C7-13E4-425D-9BE0-5015CC052E5E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,12 +48,16 @@ Global
 		{5C1298AE-1073-4DD7-9214-7C9B31AE397E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5C1298AE-1073-4DD7-9214-7C9B31AE397E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C1298AE-1073-4DD7-9214-7C9B31AE397E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAF998C7-13E4-425D-9BE0-5015CC052E5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAF998C7-13E4-425D-9BE0-5015CC052E5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAF998C7-13E4-425D-9BE0-5015CC052E5E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{5C1298AE-1073-4DD7-9214-7C9B31AE397E} = {10550F86-E3B6-4675-A4E7-EA0FC84006A9}
+		{FAF998C7-13E4-425D-9BE0-5015CC052E5E} = {10550F86-E3B6-4675-A4E7-EA0FC84006A9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {344E1F9A-8069-465A-8AB2-34EE07EBE05A}

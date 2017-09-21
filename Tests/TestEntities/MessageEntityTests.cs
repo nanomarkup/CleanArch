@@ -5,21 +5,7 @@ using Core.Entities;
 using Entities;
 
 namespace TestEntities
-{
-    public class MessageFixture : IDisposable
-    {
-        public IServiceProvider Provider { get; }
-
-        public MessageFixture()
-        {
-            IServiceCollection serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient<IMessageEntity, MessageEntity>();
-            Provider = serviceCollection.BuildServiceProvider();
-        }
-
-        public void Dispose() { }
-    }
-
+{   
     public class MessageEntityTests : IClassFixture<MessageFixture>
     {
         readonly MessageFixture fixture;
@@ -34,19 +20,25 @@ namespace TestEntities
             return fixture.Provider.GetService<IMessageEntity>();
         }
 
-        DtoDataEntity CreateDtoDataEntity()
-        {
-            return new DtoDataEntity()
-            {
-                Id = Guid.NewGuid(),
-                Created = DateTime.Now,
-                Modified = DateTime.Now
-            };
-        }
-
         DtoMessageEntity CreateDtoMessageEntity()
         {
             return new DtoMessageEntity()
+            {
+                Sender = Guid.NewGuid(),
+                Receiver = Guid.NewGuid(),
+                Text = "Message",
+                Identity = new DtoIdentityEntity()
+                {
+                    Id = Guid.NewGuid(),
+                    Created = DateTime.Now,
+                    Modified = DateTime.Now
+                }
+            };
+        }
+
+        DtoMessageCreate CreateDtoMessageCreate()
+        {
+            return new DtoMessageCreate()
             {
                 Sender = Guid.NewGuid(),
                 Receiver = Guid.NewGuid(),
@@ -58,9 +50,9 @@ namespace TestEntities
         public void TestEmptyObject()
         {
             var message = CreateMessageEntity();
-            Assert.Equal(default(Guid?), message.Id);
-            Assert.Equal(default(DateTime), message.Created);
-            Assert.Equal(default(DateTime), message.Modified);
+            Assert.Equal(default(Guid), message.Identity.Id);
+            Assert.Equal(default(DateTime), message.Identity.Created);
+            Assert.Equal(default(DateTime), message.Identity.Modified);
             Assert.Equal(default(Guid), message.Sender);
             Assert.Equal(default(Guid), message.Receiver);
             Assert.Equal(default(string), message.Text);
@@ -70,12 +62,12 @@ namespace TestEntities
         public void TestCreation()
         {
             var message = CreateMessageEntity();
-            var dtoMessage = CreateDtoMessageEntity();
+            var dtoMessage = CreateDtoMessageCreate();
             message.Create(dtoMessage);
-            Assert.False(message.Id == null);
-            Assert.False(message.Id == Guid.Empty);
-            Assert.Equal(DateTime.Now.ToShortDateString(), message.Created.ToShortDateString());
-            Assert.Equal(DateTime.Now.ToShortDateString(), message.Modified.ToShortDateString());
+            Assert.NotNull(message.Identity.Id);
+            Assert.False(message.Identity.Id == Guid.Empty);
+            Assert.Equal(DateTime.Now.ToShortDateString(), message.Identity.Created.ToShortDateString());
+            Assert.Equal(DateTime.Now.ToShortDateString(), message.Identity.Modified.ToShortDateString());
             Assert.Equal(dtoMessage.Sender, message.Sender);
             Assert.Equal(dtoMessage.Receiver, message.Receiver);
             Assert.Equal(dtoMessage.Text, message.Text);
@@ -85,12 +77,11 @@ namespace TestEntities
         public void TestInitialization()
         {
             var message = CreateMessageEntity();
-            var dtoData = CreateDtoDataEntity();
             var dtoMessage = CreateDtoMessageEntity();
-            message.Initialize(dtoData, dtoMessage);
-            Assert.True(message.Id == dtoData.Id);
-            Assert.Equal(dtoData.Created, message.Created);
-            Assert.Equal(dtoData.Modified, message.Modified);
+            message.Initialize(dtoMessage);
+            Assert.True(dtoMessage.Identity.Id == message.Identity.Id);
+            Assert.Equal(dtoMessage.Identity.Created, message.Identity.Created);
+            Assert.Equal(dtoMessage.Identity.Modified, message.Identity.Modified);
             Assert.Equal(dtoMessage.Sender, message.Sender);
             Assert.Equal(dtoMessage.Receiver, message.Receiver);
             Assert.Equal(dtoMessage.Text, message.Text);
@@ -101,10 +92,9 @@ namespace TestEntities
         public void TestIsModified(string propertyName)
         {
             var message = CreateMessageEntity();
-            var dtoData = CreateDtoDataEntity();
             var dtoMessage = CreateDtoMessageEntity();
             var property = message.GetType().GetProperty(propertyName);
-            message.Initialize(dtoData, dtoMessage);
+            message.Initialize(dtoMessage);
 
             Assert.False(message.IsModified());
             property.SetValue(message, "New value 1");
@@ -120,12 +110,13 @@ namespace TestEntities
 
         [Theory]
         [InlineData("Text")]
-        public void TestPropertyChanged(string propertyName)
+        public void TestChangedEvent(string propertyName)
         {
             var message = CreateMessageEntity();
-            var isPropertyChanged = false;
-            message.Create();
-            message.PropertyChanged += (sender, args) => { isPropertyChanged = true; };
+            var dtoMessage = CreateDtoMessageCreate();
+            var isPropertyChanged = false;            
+            message.Create(dtoMessage);
+            message.Changed += (sender, args) => { isPropertyChanged = true; };
 
             message.GetType().GetProperty(propertyName).SetValue(message, "New value");
             Assert.True(isPropertyChanged);
@@ -135,12 +126,28 @@ namespace TestEntities
         public void TestSend()
         {
             var message = CreateMessageEntity();
+            var dtoMessage = CreateDtoMessageCreate();
             var isPropertyChanged = false;
-            message.Create();
-            message.PropertyChanged += (sender, args) => { isPropertyChanged = true; };
+            message.Create(dtoMessage);
+            message.Changed += (sender, args) => { isPropertyChanged = true; };
 
             message.Send();            
             Assert.True(isPropertyChanged);
         }
+    }
+
+    public class MessageFixture : IDisposable
+    {
+        public IServiceProvider Provider { get; }
+
+        public MessageFixture()
+        {
+            IServiceCollection services = new ServiceCollection();
+            services.AddTransient<IMessageEntity, MessageEntity>();
+            services.AddTransient<IIdentityEntity, IdentityEntity>();
+            Provider = services.BuildServiceProvider();
+        }
+
+        public void Dispose() { }
     }
 }

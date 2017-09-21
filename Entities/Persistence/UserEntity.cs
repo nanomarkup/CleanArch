@@ -3,11 +3,11 @@ using Core.Entities;
 
 namespace Entities
 {
-    public class UserEntity : DataEntity, IUserEntity
+    public class UserEntity : BaseEntity, IUserEntity
     {
         string firstName;
         string lastName;
-        string email;
+        string email;   
 
         public string FirstName
         {
@@ -15,7 +15,7 @@ namespace Entities
             set
             {
                 firstName = (string.IsNullOrEmpty(value)) ? throw new ArgumentException("First Name is empty.", nameof(FirstName)) : value;
-                Changed(nameof(FirstName));
+                NotifyChanges(nameof(FirstName));
             }
         }
 
@@ -25,7 +25,7 @@ namespace Entities
             set
             {
                 lastName = (string.IsNullOrEmpty(value)) ? throw new ArgumentException("Last Name is empty.", nameof(LastName)) : value;
-                Changed(nameof(LastName));
+                NotifyChanges(nameof(LastName));
             }
         }
 
@@ -35,28 +35,35 @@ namespace Entities
             set
             {
                 email = (string.IsNullOrEmpty(value)) ? throw new ArgumentException("Email address is empty.", nameof(Email)) : value;
-                Changed(nameof(Email));
+                NotifyChanges(nameof(Email));
             }
         }
 
-        public Guid Create(DtoUserEntity userEntity)
+        public IIdentityEntity Identity { get; }
+
+        public UserEntity(IIdentityEntity identity)
         {
-            Initialize(userEntity);
-            base.Create();            
-            return Id.Value;
+            Identity = identity;
+            identity.Changed += (sender, args) =>
+            {
+                NotifyChanges(nameof(IIdentityEntity));
+            };            
         }
 
-        public void Initialize(DtoDataEntity dataEntity, DtoUserEntity userEntity)
+        public Guid Create(DtoUserCreate dto)
         {
-            Initialize(userEntity);
-            base.Initialize(dataEntity);            
+            FirstName = dto.FirstName;
+            LastName = dto.LastName;
+            Email = dto.Email;
+            return Identity.Create();            
         }
 
-        void Initialize(DtoUserEntity userEntity)
+        public void Initialize(DtoUserEntity dto)
         {
-            FirstName = userEntity.FirstName;
-            LastName = userEntity.LastName;
-            Email = userEntity.Email;
-        }
+            FirstName = dto.FirstName;
+            LastName = dto.LastName;
+            Email = dto.Email;
+            Identity.Initialize(dto.Identity);            
+        } 
     }
 }

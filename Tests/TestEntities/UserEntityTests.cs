@@ -6,20 +6,6 @@ using Entities;
 
 namespace TestEntities
 {
-    public class UserFixture : IDisposable
-    {
-        public IServiceProvider Provider { get; }
-
-        public UserFixture()
-        {
-            IServiceCollection serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient<IUserEntity, UserEntity>();
-            Provider = serviceCollection.BuildServiceProvider();
-        }
-
-        public void Dispose() { }
-    }
-
     public class UserEntityTests : IClassFixture<UserFixture>
     {
         readonly UserFixture fixture;
@@ -34,19 +20,25 @@ namespace TestEntities
             return fixture.Provider.GetService<IUserEntity>();
         }
 
-        DtoDataEntity CreateDtoDataEntity()
-        {
-            return new DtoDataEntity()
-            {
-                Id = Guid.NewGuid(),
-                Created = DateTime.Now,
-                Modified = DateTime.Now
-            };
-        }
-
         DtoUserEntity CreateDtoUserEntity()
         {
             return new DtoUserEntity()
+            {
+                FirstName = "User name",
+                LastName = "User last name",
+                Email = "User email",
+                Identity = new DtoIdentityEntity()
+                {
+                    Id = Guid.NewGuid(),
+                    Created = DateTime.Now,
+                    Modified = DateTime.Now
+                }
+            };
+        }
+
+        DtoUserCreate CreateDtoUserCreate()
+        {
+            return new DtoUserCreate()
             {
                 FirstName = "User name",
                 LastName = "User last name",
@@ -58,9 +50,9 @@ namespace TestEntities
         public void TestEmptyObject()
         {
             var user = CreateUserEntity();
-            Assert.Equal(default(Guid?), user.Id);
-            Assert.Equal(default(DateTime), user.Created);
-            Assert.Equal(default(DateTime), user.Modified);
+            Assert.Equal(default(Guid), user.Identity.Id);
+            Assert.Equal(default(DateTime), user.Identity.Created);
+            Assert.Equal(default(DateTime), user.Identity.Modified);
             Assert.Equal(default(string), user.FirstName);
             Assert.Equal(default(string), user.LastName);
             Assert.Equal(default(string), user.Email);
@@ -70,12 +62,12 @@ namespace TestEntities
         public void TestCreation()
         {
             var user = CreateUserEntity();
-            var dtoUser = CreateDtoUserEntity();
+            var dtoUser = CreateDtoUserCreate();
             user.Create(dtoUser);
-            Assert.False(user.Id == null);
-            Assert.False(user.Id == Guid.Empty);
-            Assert.Equal(DateTime.Now.ToShortDateString(), user.Created.ToShortDateString());
-            Assert.Equal(DateTime.Now.ToShortDateString(), user.Modified.ToShortDateString());
+            Assert.NotNull(user.Identity.Id);
+            Assert.False(Guid.Empty == user.Identity.Id);
+            Assert.Equal(DateTime.Now.ToShortDateString(), user.Identity.Created.ToShortDateString());
+            Assert.Equal(DateTime.Now.ToShortDateString(), user.Identity.Modified.ToShortDateString());
             Assert.Equal(dtoUser.FirstName, user.FirstName);
             Assert.Equal(dtoUser.LastName, user.LastName);
             Assert.Equal(dtoUser.Email, user.Email);
@@ -85,12 +77,11 @@ namespace TestEntities
         public void TestInitialization()
         {
             var user = CreateUserEntity();
-            var dtoData = CreateDtoDataEntity();
             var dtoUser = CreateDtoUserEntity();
-            user.Initialize(dtoData, dtoUser);
-            Assert.True(user.Id == dtoData.Id);
-            Assert.Equal(dtoData.Created, user.Created);
-            Assert.Equal(dtoData.Modified, user.Modified);
+            user.Initialize(dtoUser);
+            Assert.True(dtoUser.Identity.Id == user.Identity.Id);
+            Assert.Equal(dtoUser.Identity.Created, user.Identity.Created);
+            Assert.Equal(dtoUser.Identity.Modified, user.Identity.Modified);
             Assert.Equal(dtoUser.FirstName, user.FirstName);
             Assert.Equal(dtoUser.LastName, user.LastName);
             Assert.Equal(dtoUser.Email, user.Email);
@@ -103,10 +94,9 @@ namespace TestEntities
         public void TestIsModified(string propertyName)
         {
             var user = CreateUserEntity();
-            var dtoData = CreateDtoDataEntity();
             var dtoUser = CreateDtoUserEntity();
             var property = user.GetType().GetProperty(propertyName);
-            user.Initialize(dtoData, dtoUser);
+            user.Initialize(dtoUser);
 
             Assert.False(user.IsModified());
             property.SetValue(user, "New value 1");
@@ -124,15 +114,31 @@ namespace TestEntities
         [InlineData("FirstName")]
         [InlineData("LastName")]
         [InlineData("Email")]
-        public void TestPropertyChanged(string propertyName)
+        public void TestChangedEvent(string propertyName)
         {
             var user = CreateUserEntity();
+            var dtoUser = CreateDtoUserCreate();
             var isPropertyChanged = false;
-            user.Create();
-            user.PropertyChanged += (sender, args) => { isPropertyChanged = true; };
+            user.Create(dtoUser);
+            user.Changed += (sender, args) => { isPropertyChanged = true; };
 
             user.GetType().GetProperty(propertyName).SetValue(user, "New value");
             Assert.True(isPropertyChanged);
         }
+    }
+
+    public class UserFixture : IDisposable
+    {
+        public IServiceProvider Provider { get; }
+
+        public UserFixture()
+        {
+            IServiceCollection services = new ServiceCollection();
+            services.AddTransient<IUserEntity, UserEntity>();
+            services.AddTransient<IIdentityEntity, IdentityEntity>();
+            Provider = services.BuildServiceProvider();
+        }
+
+        public void Dispose() { }
     }
 }

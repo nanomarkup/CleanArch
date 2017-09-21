@@ -1,15 +1,8 @@
 ﻿using System;
 
 namespace Core.Entities
-{
-    public class DtoUserEntity
-    {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Email { get; set; }
-    }
-
-    public interface IUserEntity : IDataEntity
+{      
+    public interface IUserEntity : IBaseEntity
     {
         // User first name
         string FirstName { get; set; }
@@ -17,9 +10,26 @@ namespace Core.Entities
         string LastName { get; set; }
         // User email
         string Email { get; set; }
+        // Identity entity
+        IIdentityEntity Identity { get; }
         // Create a new user
-        Guid Create(DtoUserEntity userEntity);
+        Guid Create(DtoUserCreate dto);
         // Initialize/load the user
-        void Initialize(DtoDataEntity dataEntity, DtoUserEntity userEntity);
+        void Initialize(DtoUserEntity dto);
+    }
+
+    public class DtoUserEntity
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+        public DtoIdentityEntity Identity { get; set; }
+    }
+
+    public class DtoUserCreate
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
     }
 }
