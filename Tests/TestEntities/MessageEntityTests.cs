@@ -20,9 +20,9 @@ namespace TestEntities
             return fixture.Provider.GetService<IMessageEntity>();
         }
 
-        DtoMessageEntity CreateDtoMessageEntity()
+        DtoMessageIdentity CreateDtoMessageIdentity()
         {
-            return new DtoMessageEntity()
+            return new DtoMessageIdentity()
             {
                 Sender = Guid.NewGuid(),
                 Receiver = Guid.NewGuid(),
@@ -36,9 +36,9 @@ namespace TestEntities
             };
         }
 
-        DtoMessageCreate CreateDtoMessageCreate()
+        DtoMessageEntity CreateDtoMessageEntity()
         {
-            return new DtoMessageCreate()
+            return new DtoMessageEntity()
             {
                 Sender = Guid.NewGuid(),
                 Receiver = Guid.NewGuid(),
@@ -62,7 +62,7 @@ namespace TestEntities
         public void TestCreation()
         {
             var message = CreateMessageEntity();
-            var dtoMessage = CreateDtoMessageCreate();
+            var dtoMessage = CreateDtoMessageEntity();
             message.Create(dtoMessage);
             Assert.NotNull(message.Identity.Id);
             Assert.False(message.Identity.Id == Guid.Empty);
@@ -77,7 +77,7 @@ namespace TestEntities
         public void TestInitialization()
         {
             var message = CreateMessageEntity();
-            var dtoMessage = CreateDtoMessageEntity();
+            var dtoMessage = CreateDtoMessageIdentity();
             message.Initialize(dtoMessage);
             Assert.True(dtoMessage.Identity.Id == message.Identity.Id);
             Assert.Equal(dtoMessage.Identity.Created, message.Identity.Created);
@@ -92,7 +92,7 @@ namespace TestEntities
         public void TestIsModified(string propertyName)
         {
             var message = CreateMessageEntity();
-            var dtoMessage = CreateDtoMessageEntity();
+            var dtoMessage = CreateDtoMessageIdentity();
             var property = message.GetType().GetProperty(propertyName);
             message.Initialize(dtoMessage);
 
@@ -113,7 +113,7 @@ namespace TestEntities
         public void TestChangedEvent(string propertyName)
         {
             var message = CreateMessageEntity();
-            var dtoMessage = CreateDtoMessageCreate();
+            var dtoMessage = CreateDtoMessageEntity();
             var isPropertyChanged = false;            
             message.Create(dtoMessage);
             message.Changed += (sender, args) => { isPropertyChanged = true; };
@@ -126,7 +126,7 @@ namespace TestEntities
         public void TestSend()
         {
             var message = CreateMessageEntity();
-            var dtoMessage = CreateDtoMessageCreate();
+            var dtoMessage = CreateDtoMessageEntity();
             var isPropertyChanged = false;
             message.Create(dtoMessage);
             message.Changed += (sender, args) => { isPropertyChanged = true; };

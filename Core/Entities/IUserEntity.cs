@@ -13,9 +13,9 @@ namespace Core.Entities
         // Identity entity
         IIdentityEntity Identity { get; }
         // Create a new user
-        Guid Create(DtoUserCreate dto);
+        Guid Create(DtoUserEntity dto);
         // Initialize/load the user
-        void Initialize(DtoUserEntity dto);
+        void Initialize(DtoUserIdentity dto);
     }
 
     public class DtoUserEntity
@@ -23,13 +23,13 @@ namespace Core.Entities
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
-        public DtoIdentityEntity Identity { get; set; }
     }
 
-    public class DtoUserCreate
+    public class DtoUserIdentity
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
+        public DtoIdentityEntity Identity { get; set; }
     }
 }

@@ -22,7 +22,7 @@ namespace TestInteractors
             services.AddTransient<IUserEntity, UserEntity>();
             services.AddTransient<IIdentityEntity, IdentityEntity>();
             services.AddTransient<IUserInteractor, UserInteractor>();
-            services.AddTransient<IPersistenceGateway<DtoUserEntity>, UserGateway>();
+            services.AddTransient<IUserGateway, UserGateway>();
             Provider = services.BuildServiceProvider();
         }
 
@@ -53,13 +53,23 @@ namespace TestInteractors
             var user = CreateUserInteractor();
             if ((new List<string>() { firstName, lastName, email }).All(x => x.Length > 0))
             {
-                var userId = user.Create(firstName, lastName, email);
+                var userId = user.Create(new DtoUserIntCreate()
+                {
+                    FirstName = firstName,
+                    LastName = lastName,
+                    Email = email
+                });
                 Assert.NotNull(userId);
                 Assert.False(userId == Guid.Empty);
             }
             else
             {
-                var ex = Assert.Throws<ArgumentException>(() => user.Create(firstName, lastName, email));
+                var ex = Assert.Throws<ArgumentException>(() => user.Create(new DtoUserIntCreate()
+                {
+                    FirstName = firstName,
+                    LastName = lastName,
+                    Email = email
+                }));
                 Assert.True(ex.Message.Contains(" is empty."));
             }            
         }

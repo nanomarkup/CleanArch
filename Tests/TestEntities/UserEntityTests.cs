@@ -20,9 +20,9 @@ namespace TestEntities
             return fixture.Provider.GetService<IUserEntity>();
         }
 
-        DtoUserEntity CreateDtoUserEntity()
+        DtoUserIdentity CreateDtoUserIdentity()
         {
-            return new DtoUserEntity()
+            return new DtoUserIdentity()
             {
                 FirstName = "User name",
                 LastName = "User last name",
@@ -36,9 +36,9 @@ namespace TestEntities
             };
         }
 
-        DtoUserCreate CreateDtoUserCreate()
+        DtoUserEntity CreateDtoUserEntity()
         {
-            return new DtoUserCreate()
+            return new DtoUserEntity()
             {
                 FirstName = "User name",
                 LastName = "User last name",
@@ -62,7 +62,7 @@ namespace TestEntities
         public void TestCreation()
         {
             var user = CreateUserEntity();
-            var dtoUser = CreateDtoUserCreate();
+            var dtoUser = CreateDtoUserEntity();
             user.Create(dtoUser);
             Assert.NotNull(user.Identity.Id);
             Assert.False(Guid.Empty == user.Identity.Id);
@@ -77,7 +77,7 @@ namespace TestEntities
         public void TestInitialization()
         {
             var user = CreateUserEntity();
-            var dtoUser = CreateDtoUserEntity();
+            var dtoUser = CreateDtoUserIdentity();
             user.Initialize(dtoUser);
             Assert.True(dtoUser.Identity.Id == user.Identity.Id);
             Assert.Equal(dtoUser.Identity.Created, user.Identity.Created);
@@ -94,7 +94,7 @@ namespace TestEntities
         public void TestIsModified(string propertyName)
         {
             var user = CreateUserEntity();
-            var dtoUser = CreateDtoUserEntity();
+            var dtoUser = CreateDtoUserIdentity();
             var property = user.GetType().GetProperty(propertyName);
             user.Initialize(dtoUser);
 
@@ -117,7 +117,7 @@ namespace TestEntities
         public void TestChangedEvent(string propertyName)
         {
             var user = CreateUserEntity();
-            var dtoUser = CreateDtoUserCreate();
+            var dtoUser = CreateDtoUserEntity();
             var isPropertyChanged = false;
             user.Create(dtoUser);
             user.Changed += (sender, args) => { isPropertyChanged = true; };

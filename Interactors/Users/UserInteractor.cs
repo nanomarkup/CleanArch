@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
 using Core.Entities;
-using Core.Interactors;
 using Core.Gateways;
+using Core.Interactors;
 
 namespace Interactors
 {
@@ -10,28 +10,36 @@ namespace Interactors
     {
         public UserInteractor(IServiceProvider provider) : base(provider) { }
 
-        public Guid Create(string firstName, string lastName, string email)
+        public Guid Create(DtoUserIntCreate dto)
         {
             var user = GetService<IUserEntity>();            
             user.Changed += (sender, args) =>
             {
-                GetService<IPersistenceGateway<DtoUserEntity>>().Create(new DtoUserEntity());
+                GetService<IUserGateway>().Add(new DtoUserGwInfo()
+                {
+                    Id = user.Identity.Id,
+                    Created = user.Identity.Created,
+                    Modified = user.Identity.Modified,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email
+                });
             };
 
-            return user.Create(new DtoUserCreate()
+            return user.Create(new DtoUserEntity()
             {
-                FirstName = firstName,
-                LastName = lastName,
-                Email = email
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
+                Email = dto.Email
             });
         }
 
-        public void Update(Guid id, string firstName, string lastName, string email)
+        public void Modify(DtoUserIntModify dto)
         {
             throw new NotImplementedException();
         }
 
-        public bool Delete(Guid id)
+        public bool Delete(DtoUserIntDelete dto)
         {
             throw new NotImplementedException();
         }

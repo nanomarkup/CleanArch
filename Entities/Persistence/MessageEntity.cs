@@ -33,7 +33,7 @@ namespace Entities
             };
         }
 
-        public Guid Create(DtoMessageCreate dto)
+        public Guid Create(DtoMessageEntity dto)
         {
             sender = (dto.Sender == Guid.Empty) ?
                 throw new ArgumentException("GUID value is empty.", nameof(dto.Sender)) : dto.Sender;
@@ -43,7 +43,7 @@ namespace Entities
             return Identity.Create();
         }
 
-        public void Initialize(DtoMessageEntity dto)
+        public void Initialize(DtoMessageIdentity dto)
         {
             sender = (dto.Sender == Guid.Empty) ?
                 throw new ArgumentException("GUID value is empty.", nameof(dto.Sender)) : dto.Sender;
