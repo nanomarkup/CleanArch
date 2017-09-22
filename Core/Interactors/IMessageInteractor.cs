@@ -1,37 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
+using Core.Entities;
 
 namespace Core.Interactors
 {
     public interface IMessageInteractor
     {
         // Send the text message to a receiver
-        DtoIMessageSendResponse Send(DtoIMessageSendRequest dto);
+        Guid Send(DtoIMessageSend dto);
         // Read all messages sent between sender and receiver
-        IEnumerable<string> Read(DtoIMessageReadRequest dto);
+        IEnumerable<DtoIMessageInfo> Read(DtoIMessageRead dto);
         // Read all messages sent between sender and receiver since some date or period of date
-        IEnumerable<string> Read(DtoIMessageReadByDateRequest dto);
+        IEnumerable<DtoIMessageInfo> Read(DtoIMessageReadByDate dto);
     }
 
-    public class DtoIMessageSendRequest
+    public class DtoIMessageInfo
+    {
+        public Guid Id { get; set; }
+        public DateTime Created { get; set; }
+        public DateTime Modified { get; set; }
+        public Guid Sender { get; set; }
+        public Guid Receiver { get; set; }
+        public string Text { get; set; }
+    }
+
+    public class DtoIMessageSend
     {
         public Guid Sender { get; set; }
         public Guid Receiver { get; set; }
         public string Text { get; set; }
     }
 
-    public class DtoIMessageSendResponse
-    {
-        public bool Result { get; set; }
-    }
-
-    public class DtoIMessageReadRequest
+    public class DtoIMessageRead
     {
         public Guid Sender { get; set; }
         public Guid Receiver { get; set; }
     }
 
-    public class DtoIMessageReadByDateRequest
+    public class DtoIMessageReadByDate
     {
         public Guid Sender { get; set; }
         public Guid Receiver { get; set; }

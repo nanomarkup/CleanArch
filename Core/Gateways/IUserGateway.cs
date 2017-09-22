@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Linq;
 
 namespace Core.Gateways
 {
-    public interface IUserGateway : IPersistenceGateway<DtoGUserInfo, DtoGUserRetrieve, DtoGUserInfo, DtoGUserDelete> { }
+    public interface IUserGateway : IPersistenceGateway<DtoGUserInfo, DtoGUserModified, DtoGUserQuery> { }
     
     public class DtoGUserInfo
     {
@@ -14,11 +15,17 @@ namespace Core.Gateways
         public string Email { get; set; }
     }
 
-    public class DtoGUserRetrieve
-    { }
-
-    public class DtoGUserDelete
+    public class DtoGUserModified
     {
         public Guid Id { get; set; }
+        public DateTime Modified { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+    }
+
+    public class DtoGUserQuery
+    {
+        
     }
 }

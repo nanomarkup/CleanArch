@@ -10,7 +10,7 @@ using Interactors;
 
 namespace ConsoleApp
 {
-    class Program : IServiceResponse<DtoIMessageSendResponse>
+    class Program : IServiceResponse<DtoGuidResponse>
     {
         static IServiceProvider ConfigureServices()
         {
@@ -31,21 +31,21 @@ namespace ConsoleApp
             });
 
             Service.Provider = ConfigureServices();
-            Service.Message.Send.Invoke(new DtoIMessageSendRequest()
+            Service.Message.Send.Invoke(new DtoIMessageSend()
             {
                 Sender = Guid.NewGuid(),
                 Receiver = Guid.NewGuid(),
                 Text = "New message 1."
             });
 
-            Service.Message.Send.InvokeAsync(new DtoIMessageSendRequest()
+            Service.Message.Send.InvokeAsync(new DtoIMessageSend()
             {
                 Sender = Guid.NewGuid(),
                 Receiver = Guid.NewGuid(),
                 Text = "New message 2."
             }, new Message());
 
-            Service.Message.Send.InvokeAsync(new DtoIMessageSendRequest()
+            Service.Message.Send.InvokeAsync(new DtoIMessageSend()
             {
                 Sender = Guid.NewGuid(),
                 Receiver = Guid.NewGuid(),
@@ -55,14 +55,14 @@ namespace ConsoleApp
             Console.Read();
         }
 
-        public void ServiceResponse(DtoIMessageSendResponse dto)
+        public void ServiceResponse(DtoGuidResponse dto)
         {
             Console.WriteLine("The Main class notified about a message.");
         }
 
-        class Message : IServiceResponse<DtoIMessageSendResponse>
+        class Message : IServiceResponse<DtoGuidResponse>
         {
-            public void ServiceResponse(DtoIMessageSendResponse dto)
+            public void ServiceResponse(DtoGuidResponse dto)
             {
                 Console.WriteLine("The Message class notified about a message.");
             }

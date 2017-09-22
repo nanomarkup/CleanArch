@@ -1,5 +1,6 @@
 ﻿using System;
 using AutoMapper;
+using Core.Gateways;
 using Core.Interactors;
 
 namespace Core.AutoMapper
@@ -9,8 +10,11 @@ namespace Core.AutoMapper
         public InteractorProfile()
         {
             // The destination type should be Interactor DTO (DtoI) for all maps
-            CreateMap<DtoIMessageReadRequest, DtoIMessageReadByDateRequest>()
-                .ForMember(dest => dest.Start, opts => opts.MapFrom(src => DateTime.MinValue));
+            CreateMap<DtoGUserInfo, DtoIUserInfo>();
+            CreateMap<DtoGMessageInfo, DtoIMessageInfo>();            
+
+            CreateMap<DtoIMessageRead, DtoIMessageReadByDate>()
+                .ForMember(dest => dest.Start, opts => opts.MapFrom(src => DateTime.MinValue));            
         }
     }
 }

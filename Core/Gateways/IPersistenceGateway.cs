@@ -1,18 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace Core.Gateways
 {
-    public interface IPersistenceGateway<DtoAdd, DtoRetrieve, DtoModify, DtoDelete> 
-        where DtoAdd : class
-        where DtoRetrieve : class
+    public interface IPersistenceGateway<DtoInfo, DtoModify, DtoQuery> 
+        where DtoInfo : class
         where DtoModify : class
-        where DtoDelete : class
+        where DtoQuery : class
     {
-        void Add(DtoAdd dto);
-        void Retrieve(DtoRetrieve dto);
-        void Modify(DtoModify dto);
-        void Delete(DtoDelete dto);
+        Guid Add(DtoInfo dto);
+        DtoInfo Retrieve(Guid id);
+        IQueryable<DtoInfo> Retrieve(DtoQuery dto);
+        Guid Modify(DtoModify dto);
+        Guid Delete(Guid id);
     }
 }

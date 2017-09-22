@@ -3,25 +3,25 @@ using System.Linq;
 using Core.Gateways;
 
 namespace Infrastructure.Gateways
-{  
-    public class UserGateway : IUserGateway
+{
+    public class MessageGateway : IMessageGateway
     {
-        public Guid Add(DtoGUserInfo dto)
+        public Guid Add(DtoGMessageInfo dto)
         {
             return Guid.Empty;
         }
 
-        public DtoGUserInfo Retrieve(Guid id)
+        public DtoGMessageInfo Retrieve(Guid id)
         {
-            return new DtoGUserInfo();
+            return new DtoGMessageInfo();
         }
 
-        public IQueryable<DtoGUserInfo> Retrieve(DtoGUserQuery dto)
+        public IQueryable<DtoGMessageInfo> Retrieve(DtoGMessageQuery dto)
         {
             return null;
         }
 
-        public Guid Modify(DtoGUserModified dto)
+        public Guid Modify(DtoGMessageModified dto)
         {
             return Guid.Empty;
         }

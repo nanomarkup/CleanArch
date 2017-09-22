@@ -17,7 +17,7 @@ namespace Core.Entities
         // Initialize/load the message
         void Initialize(DtoEMessageIdentity dto);
         // Send message to receiver
-        bool Send();
+        Guid Send();
     }
 
     public class DtoEMessage

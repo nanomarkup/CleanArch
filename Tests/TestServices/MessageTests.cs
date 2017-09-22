@@ -47,7 +47,7 @@ namespace TestServices
         public void TestSendMessage()
         {
             Service.Provider = fixture.Provider;
-            Service.Message.Send.Invoke(new DtoIMessageSendRequest()
+            Service.Message.Send.Invoke(new DtoIMessageSend()
             {
                 Sender = Guid.NewGuid(),
                 Receiver = Guid.NewGuid(),

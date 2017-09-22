@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
+using Core.Entities;
 using Core.Interactors;
 
 namespace Services
@@ -13,15 +15,40 @@ namespace Services
             Provider = provider;
         }          
 
-        public IServiceHandler<DtoIMessageSendRequest, DtoIMessageSendResponse> Send
+        public IServiceHandler<DtoIMessageSend, DtoGuidResponse> Send
         {
             get
             {
-                return new BaseService<DtoIMessageSendRequest, DtoIMessageSendResponse>(x =>
+                return new BaseService<DtoIMessageSend, DtoGuidResponse>(x =>
                 {
-                    return Provider.GetService<IMessageInteractor>().Send(x);
+                    return new DtoGuidResponse()
+                    {
+                        Result = Provider.GetService<IMessageInteractor>().Send(x)
+                    };
                 });
             }
         }
+
+        public IServiceHandler<DtoIMessageRead, IEnumerable<DtoIMessageInfo>> Read
+        {
+            get
+            {
+                return new BaseService<DtoIMessageRead, IEnumerable<DtoIMessageInfo>>(x =>
+                {
+                    return Provider.GetService<IMessageInteractor>().Read(x);
+                });
+            }
+        }
+
+        public IServiceHandler<DtoIMessageReadByDate, IEnumerable<DtoIMessageInfo>> ReadByDate
+        {
+            get
+            {
+                return new BaseService<DtoIMessageReadByDate, IEnumerable<DtoIMessageInfo>>(x =>
+                {
+                    return Provider.GetService<IMessageInteractor>().Read(x);
+                });
+            }
+        }  
     }
 }

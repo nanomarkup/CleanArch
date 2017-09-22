@@ -53,10 +53,10 @@ namespace Entities
             Identity.Initialize(dto.Identity);
         }
 
-        public bool Send()
+        public Guid Send()
         {
             NotifyChanges(nameof(Send));
-            return true;
+            return Identity.Id;
         }
     }
 }

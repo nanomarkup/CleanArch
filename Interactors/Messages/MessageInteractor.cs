@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using Core.Entities;
+using Core.Gateways;
 using Core.Interactors;
 using AutoMapper;
 
@@ -10,24 +12,23 @@ namespace Interactors
     {
         public MessageInteractor(IServiceProvider provider) : base(provider) { }
 
-        public DtoIMessageSendResponse Send(DtoIMessageSendRequest dto)
+        public Guid Send(DtoIMessageSend dto)
         {
             var message = GetService<IMessageEntity>();
             message.Create(Mapper.Map<DtoEMessage>(dto));
-            return new DtoIMessageSendResponse()
-            {
-                Result = message.Send()
-            };
+            return message.Send();
         }
 
-        public IEnumerable<string> Read(DtoIMessageReadRequest dto)
+        public IEnumerable<DtoIMessageInfo> Read(DtoIMessageRead dto)
         {
-            return Read(Mapper.Map<DtoIMessageReadByDateRequest>(dto));
+            return Read(Mapper.Map<DtoIMessageReadByDate>(dto));
         }
 
-        public IEnumerable<string> Read(DtoIMessageReadByDateRequest dto)
+        public IEnumerable<DtoIMessageInfo> Read(DtoIMessageReadByDate dto)
         {
-            throw new NotImplementedException();
+            var gw = GetService<IMessageGateway>();
+            var messages = gw.Retrieve(Mapper.Map<DtoGMessageQuery>(dto));
+            return messages.ToList().Select(x => Mapper.Map<DtoIMessageInfo>(x));
         }
     }
 }
