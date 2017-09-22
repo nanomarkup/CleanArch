@@ -20,14 +20,14 @@ namespace TestEntities
             return fixture.Provider.GetService<IUserEntity>();
         }
 
-        DtoUserIdentity CreateDtoUserIdentity()
+        DtoEUserIdentity CreateDtoUserIdentity()
         {
-            return new DtoUserIdentity()
+            return new DtoEUserIdentity()
             {
                 FirstName = "User name",
                 LastName = "User last name",
                 Email = "User email",
-                Identity = new DtoIdentityEntity()
+                Identity = new DtoEIdentity()
                 {
                     Id = Guid.NewGuid(),
                     Created = DateTime.Now,
@@ -36,9 +36,9 @@ namespace TestEntities
             };
         }
 
-        DtoUserEntity CreateDtoUserEntity()
+        DtoEUser CreateDtoUserEntity()
         {
-            return new DtoUserEntity()
+            return new DtoEUser()
             {
                 FirstName = "User name",
                 LastName = "User last name",

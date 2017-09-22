@@ -50,7 +50,7 @@ namespace Entities
             };            
         }
 
-        public Guid Create(DtoUserEntity dto)
+        public Guid Create(DtoEUser dto)
         {
             FirstName = dto.FirstName;
             LastName = dto.LastName;
@@ -58,7 +58,7 @@ namespace Entities
             return Identity.Create();            
         }
 
-        public void Initialize(DtoUserIdentity dto)
+        public void Initialize(DtoEUserIdentity dto)
         {
             FirstName = dto.FirstName;
             LastName = dto.LastName;

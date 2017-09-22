@@ -31,7 +31,7 @@ namespace Entities
             return Id;
         }
 
-        public void Initialize(DtoIdentityEntity dto)
+        public void Initialize(DtoEIdentity dto)
         {
             if (isInitialized)
                 throw new InvalidOperationException("The object has been initialized.");

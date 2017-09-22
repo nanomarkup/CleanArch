@@ -8,22 +8,22 @@ namespace Infrastructure.Gateways
 {  
     public class UserGateway : IUserGateway
     {
-        public void Add(DtoUserGwInfo dto)
+        public void Add(DtoGUserInfo dto)
         {
 
         }
 
-        public void Retrieve(DtoUserGwRetrieve dto)
+        public void Retrieve(DtoGUserRetrieve dto)
         {
 
         }
 
-        public void Modify(DtoUserGwInfo dto)
+        public void Modify(DtoGUserInfo dto)
         {
 
         }
 
-        public void Delete(DtoUserGwDelete dto)
+        public void Delete(DtoGUserDelete dto)
         {
 
         }

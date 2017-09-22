@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.Extensions.DependencyInjection;
 using Core.Entities;
 using Core.Interactors;
+using AutoMapper;
 
 namespace Interactors
 {
@@ -10,34 +10,22 @@ namespace Interactors
     {
         public MessageInteractor(IServiceProvider provider) : base(provider) { }
 
-        public DtoMessageIntSendResponse Send(DtoMessageIntSendRequest dto)
+        public DtoIMessageSendResponse Send(DtoIMessageSendRequest dto)
         {
             var message = GetService<IMessageEntity>();
-            message.Create(new DtoMessageEntity()
-            {
-                Sender = dto.Sender,
-                Receiver = dto.Receiver,
-                Text = dto.Text
-            });
-
-            return new DtoMessageIntSendResponse()
+            message.Create(Mapper.Map<DtoEMessage>(dto));
+            return new DtoIMessageSendResponse()
             {
                 Result = message.Send()
             };
         }
 
-        public IEnumerable<string> Read(DtoMessageIntReadRequest dto)
+        public IEnumerable<string> Read(DtoIMessageReadRequest dto)
         {
-            return Read(new DtoMessageIntReadByDateRequest()
-            {
-                Sender = dto.Sender,
-                Receiver = dto.Receiver,
-                Start = DateTime.MinValue,
-                End = null
-            });
+            return Read(Mapper.Map<DtoIMessageReadByDateRequest>(dto));
         }
 
-        public IEnumerable<string> Read(DtoMessageIntReadByDateRequest dto)
+        public IEnumerable<string> Read(DtoIMessageReadByDateRequest dto)
         {
             throw new NotImplementedException();
         }

@@ -20,14 +20,14 @@ namespace TestEntities
             return fixture.Provider.GetService<IMessageEntity>();
         }
 
-        DtoMessageIdentity CreateDtoMessageIdentity()
+        DtoEMessageIdentity CreateDtoMessageIdentity()
         {
-            return new DtoMessageIdentity()
+            return new DtoEMessageIdentity()
             {
                 Sender = Guid.NewGuid(),
                 Receiver = Guid.NewGuid(),
                 Text = "Message",
-                Identity = new DtoIdentityEntity()
+                Identity = new DtoEIdentity()
                 {
                     Id = Guid.NewGuid(),
                     Created = DateTime.Now,
@@ -36,9 +36,9 @@ namespace TestEntities
             };
         }
 
-        DtoMessageEntity CreateDtoMessageEntity()
+        DtoEMessage CreateDtoMessageEntity()
         {
-            return new DtoMessageEntity()
+            return new DtoEMessage()
             {
                 Sender = Guid.NewGuid(),
                 Receiver = Guid.NewGuid(),

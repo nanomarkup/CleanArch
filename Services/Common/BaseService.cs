@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Services
 {
-    public class BaseService<Request, Response> : IServiceHandler<Request, Response>
+    class BaseService<Request, Response> : IServiceHandler<Request, Response>
         where Request : class
         where Response : class
     {
@@ -20,22 +20,22 @@ namespace Services
             RequestFunc = requestFunc;
         }
 
-        public virtual Response Handle(Request request)
+        public virtual Response Invoke(Request request)
         {
             return DoRequest(request);
         }
 
-        public virtual async Task<Response> HandleAsync(Request request)
+        public virtual async Task<Response> InvokeAsync(Request request)
         {
             return await Task.Run<Response>(() => { return DoRequest(request); }); ;
         }
 
-        public virtual void Handle(Request request, IServiceResponse<Response> service)
+        public virtual void Invoke(Request request, IServiceResponse<Response> service)
         {
             DoRequest(request, service);
         }
 
-        public virtual async Task HandleAsync(Request request, IServiceResponse<Response> service)
+        public virtual async Task InvokeAsync(Request request, IServiceResponse<Response> service)
         {
             await Task.Run(() => { DoRequest(request, service); });
         }                

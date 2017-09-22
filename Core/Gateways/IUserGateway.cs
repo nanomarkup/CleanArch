@@ -2,9 +2,9 @@
 
 namespace Core.Gateways
 {
-    public interface IUserGateway : IPersistenceGateway<DtoUserGwInfo, DtoUserGwRetrieve, DtoUserGwInfo, DtoUserGwDelete> { }
+    public interface IUserGateway : IPersistenceGateway<DtoGUserInfo, DtoGUserRetrieve, DtoGUserInfo, DtoGUserDelete> { }
     
-    public class DtoUserGwInfo
+    public class DtoGUserInfo
     {
         public Guid Id { get; set; }
         public DateTime Created { get; set; }
@@ -14,10 +14,10 @@ namespace Core.Gateways
         public string Email { get; set; }
     }
 
-    public class DtoUserGwRetrieve
+    public class DtoGUserRetrieve
     { }
 
-    public class DtoUserGwDelete
+    public class DtoGUserDelete
     {
         public Guid Id { get; set; }
     }

@@ -13,10 +13,10 @@ namespace Core.Entities
         // Uses for creation a new entity
         Guid Create();
         // Uses for initializing/loading entity
-        void Initialize(DtoIdentityEntity dto);        
+        void Initialize(DtoEIdentity dto);        
     }
 
-    public class DtoIdentityEntity
+    public class DtoEIdentity
     {
         public Guid Id { get; set; }
         public DateTime Created { get; set; }

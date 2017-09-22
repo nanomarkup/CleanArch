@@ -1,15 +1,23 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System;
+using Microsoft.Extensions.DependencyInjection;
 using Core.Interactors;
 
 namespace Services
 {
-    public static partial class Service
-    {      
-        public static IServiceHandler<DtoMessageIntSendRequest, DtoMessageIntSendResponse> SendMessage
+    public class MessageService
+    {
+        IServiceProvider Provider { get; }
+
+        public MessageService(IServiceProvider provider)
+        {
+            Provider = provider;
+        }          
+
+        public IServiceHandler<DtoIMessageSendRequest, DtoIMessageSendResponse> Send
         {
             get
             {
-                return new BaseService<DtoMessageIntSendRequest, DtoMessageIntSendResponse>(x =>
+                return new BaseService<DtoIMessageSendRequest, DtoIMessageSendResponse>(x =>
                 {
                     return Provider.GetService<IMessageInteractor>().Send(x);
                 });
