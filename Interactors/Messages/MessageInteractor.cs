@@ -12,11 +12,11 @@ namespace Interactors
     {
         public MessageInteractor(IServiceProvider provider) : base(provider) { }
 
-        public Guid Send(DtoIMessageSend dto)
+        public DtoIMessageId Send(DtoIMessageSend dto)
         {
             var message = GetService<IMessageEntity>();
             message.Create(Mapper.Map<DtoEMessage>(dto));
-            return message.Send();
+            return new DtoIMessageId() { Id = message.Send() };
         }
 
         public IEnumerable<DtoIMessageInfo> Read(DtoIMessageRead dto)

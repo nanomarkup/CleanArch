@@ -7,11 +7,16 @@ namespace Core.Interactors
     public interface IMessageInteractor
     {
         // Send the text message to a receiver
-        Guid Send(DtoIMessageSend dto);
+        DtoIMessageId Send(DtoIMessageSend dto);
         // Read all messages sent between sender and receiver
         IEnumerable<DtoIMessageInfo> Read(DtoIMessageRead dto);
         // Read all messages sent between sender and receiver since some date or period of date
         IEnumerable<DtoIMessageInfo> Read(DtoIMessageReadByDate dto);
+    }
+
+    public class DtoIMessageId
+    {
+        public Guid Id { get; set; }
     }
 
     public class DtoIMessageInfo

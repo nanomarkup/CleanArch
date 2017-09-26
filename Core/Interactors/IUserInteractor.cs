@@ -5,13 +5,18 @@ namespace Core.Interactors
     public interface IUserInteractor
     {
         // Create a new user
-        Guid Create(DtoIUserCreate dto);
+        DtoIUserId Create(DtoIUserCreate dto);
         // Retrieve an user
-        DtoIUserInfo Retrieve(Guid id);
+        DtoIUserInfo Retrieve(DtoIUserId id);
         // Update an existing user by user id
-        Guid Modify(DtoIUserModify dto);
+        DtoIUserId Modify(DtoIUserModify dto);
         // Remove user by user id
-        Guid Delete(Guid id);
+        DtoIUserId Delete(DtoIUserId id);
+    }
+
+    public class DtoIUserId
+    {
+        public Guid Id { get; set; }
     }
 
     public class DtoIUserInfo

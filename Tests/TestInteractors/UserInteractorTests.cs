@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
-using AutoMapper;
 using Core.Entities;
 using Core.Interactors;
 using Core.Gateways;
-using Core.AutoMapper;
+using Core.Mapper;
 using Entities;
 using Interactors;
 using Infrastructure.Gateways;
@@ -27,12 +26,7 @@ namespace TestInteractors
             services.AddTransient<IUserGateway, UserGateway>();
             Provider = services.BuildServiceProvider();
 
-            Mapper.Initialize(cfg =>
-            {
-                cfg.AddProfile(new EntityProfile());
-                cfg.AddProfile(new GatewayProfile());
-                cfg.AddProfile(new InteractorProfile());
-            });
+            CoreMapper.Initialize();
         }
 
         public void Dispose() { }
@@ -69,7 +63,7 @@ namespace TestInteractors
                     Email = email
                 });
                 Assert.NotNull(userId);
-                Assert.False(userId == Guid.Empty);
+                Assert.False(userId.Id == Guid.Empty);
             }
             else
             {

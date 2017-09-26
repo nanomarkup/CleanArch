@@ -2,7 +2,7 @@ using System;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 using AutoMapper;
-using Core.AutoMapper;
+using Core.Mapper;
 using Core.Entities;
 using Core.Interactors;
 using Entities;

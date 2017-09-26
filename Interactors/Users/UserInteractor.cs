@@ -10,7 +10,7 @@ namespace Interactors
     {
         public UserInteractor(IServiceProvider provider) : base(provider) { }
 
-        public Guid Create(DtoIUserCreate dto)
+        public DtoIUserId Create(DtoIUserCreate dto)
         {
             var user = GetService<IUserEntity>();            
             user.Changed += (sender, args) => 
@@ -18,15 +18,15 @@ namespace Interactors
                 // Add a new user to the infrastructure
                 GetService<IUserGateway>().Add(Mapper.Map<DtoGUserInfo>(user));
             };
-            return user.Create(Mapper.Map<DtoEUser>(dto));
+            return new DtoIUserId() { Id = user.Create(Mapper.Map<DtoEUser>(dto)) };
         }
 
-        public DtoIUserInfo Retrieve(Guid id)
+        public DtoIUserInfo Retrieve(DtoIUserId id)
         {
-            return Mapper.Map<DtoIUserInfo>(GetService<IUserGateway>().Retrieve(id));
+            return Mapper.Map<DtoIUserInfo>(GetService<IUserGateway>().Retrieve(id.Id));
         }
 
-        public Guid Modify(DtoIUserModify dto)
+        public DtoIUserId Modify(DtoIUserModify dto)
         {            
             // Read user from the infrastructure
             var user = GetService<IUserEntity>();
@@ -50,12 +50,12 @@ namespace Interactors
             {
                 user.EndUpdate();
             }
-            return user.Identity.Id;
+            return new DtoIUserId() { Id = user.Identity.Id };
         }
 
-        public Guid Delete(Guid id)
+        public DtoIUserId Delete(DtoIUserId id)
         {
-            return GetService<IUserGateway>().Delete(id);
+            return new DtoIUserId() { Id = GetService<IUserGateway>().Delete(id.Id) };
         }
     }
 }

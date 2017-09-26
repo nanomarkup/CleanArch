@@ -3,7 +3,7 @@ using AutoMapper;
 using Core.Gateways;
 using Core.Interactors;
 
-namespace Core.AutoMapper
+namespace Core.Mapper
 {
     public class InteractorProfile : Profile
     {

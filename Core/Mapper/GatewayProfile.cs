@@ -3,7 +3,7 @@ using Core.Entities;
 using Core.Gateways;
 using Core.Interactors;
 
-namespace Core.AutoMapper
+namespace Core.Mapper
 {
     public class GatewayProfile : Profile
     {

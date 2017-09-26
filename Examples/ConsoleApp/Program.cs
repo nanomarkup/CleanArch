@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
-using AutoMapper;
-using Core.AutoMapper;
+using Core.Mapper;
 using Core.Entities;
 using Core.Interactors;
 using Services;
@@ -10,7 +9,7 @@ using Interactors;
 
 namespace ConsoleApp
 {
-    class Program : IServiceResponse<DtoGuidResponse>
+    class Program : IServiceResponse<DtoIMessageId>
     {
         static IServiceProvider ConfigureServices()
         {
@@ -23,14 +22,10 @@ namespace ConsoleApp
 
         static void Main(string[] args)
         {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.AddProfile(new EntityProfile());
-                cfg.AddProfile(new GatewayProfile());
-                cfg.AddProfile(new InteractorProfile());
-            });
-
+            CoreMapper.Initialize();
             Service.Provider = ConfigureServices();
+
+            // Testing
             Service.Message.Send.Invoke(new DtoIMessageSend()
             {
                 Sender = Guid.NewGuid(),
@@ -55,14 +50,14 @@ namespace ConsoleApp
             Console.Read();
         }
 
-        public void ServiceResponse(DtoGuidResponse dto)
+        public void ServiceResponse(DtoIMessageId dto)
         {
             Console.WriteLine("The Main class notified about a message.");
         }
 
-        class Message : IServiceResponse<DtoGuidResponse>
+        class Message : IServiceResponse<DtoIMessageId>
         {
-            public void ServiceResponse(DtoGuidResponse dto)
+            public void ServiceResponse(DtoIMessageId dto)
             {
                 Console.WriteLine("The Message class notified about a message.");
             }
