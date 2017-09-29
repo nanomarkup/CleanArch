@@ -14,27 +14,35 @@ namespace Services
             Provider = provider;
         }          
 
-        public IServiceHandler<DtoIMessageSend, DtoIMessageId> Send
+        public IServiceHandler<DtoMessageSendInteractor, DtoMessageIdInteractor> Send
         {
             get
             {
-                return new BaseService<DtoIMessageSend, DtoIMessageId>(x => Provider.GetService<IMessageInteractor>().Send(x));
+                return new BaseService<DtoMessageSendInteractor, DtoMessageIdInteractor>(x => Provider.GetService<IMessageInteractor>().Send(x));
             }
         }
 
-        public IServiceHandler<DtoIMessageRead, IEnumerable<DtoIMessageInfo>> Read
+        public IServiceHandler<DtoMessageReadInteractor, IEnumerable<DtoMessageInfoInteractor>> Read
         {
             get
             {
-                return new BaseService<DtoIMessageRead, IEnumerable<DtoIMessageInfo>>(x => Provider.GetService<IMessageInteractor>().Read(x));
+                return new BaseService<DtoMessageReadInteractor, IEnumerable<DtoMessageInfoInteractor>>(x => Provider.GetService<IMessageInteractor>().Read(x));
             }
         }
 
-        public IServiceHandler<DtoIMessageReadByDate, IEnumerable<DtoIMessageInfo>> ReadByDate
+        public IServiceHandler<DtoMessageReadByIdInteractor, DtoMessageInfoInteractor> ReadById
         {
             get
             {
-                return new BaseService<DtoIMessageReadByDate, IEnumerable<DtoIMessageInfo>>(x => Provider.GetService<IMessageInteractor>().Read(x));
+                return new BaseService<DtoMessageReadByIdInteractor, DtoMessageInfoInteractor>(x => Provider.GetService<IMessageInteractor>().Read(x));
+            }
+        }
+
+        public IServiceHandler<DtoMessageReadByDateInteractor, IEnumerable<DtoMessageInfoInteractor>> ReadByDate
+        {
+            get
+            {
+                return new BaseService<DtoMessageReadByDateInteractor, IEnumerable<DtoMessageInfoInteractor>>(x => Provider.GetService<IMessageInteractor>().Read(x));
             }
         }  
     }

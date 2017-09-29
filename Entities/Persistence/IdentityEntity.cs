@@ -8,8 +8,7 @@ namespace Entities
     {
         Guid id;
         DateTime created;
-        DateTime modified;                
-        bool isInitialized;
+        DateTime modified;                        
 
         public Guid Id { get { return id; } }
         public DateTime Created { get { return created; } }
@@ -31,7 +30,7 @@ namespace Entities
             return Id;
         }
 
-        public void Initialize(DtoEIdentity dto)
+        public void Initialize(DtoIdentityEntity dto)
         {
             if (isInitialized)
                 throw new InvalidOperationException("The object has been initialized.");

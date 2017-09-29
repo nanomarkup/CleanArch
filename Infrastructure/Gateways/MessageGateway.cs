@@ -1,27 +1,44 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using Core.Gateways;
+using Infrastructure.Context;
+using Infrastructure.Entities;
 
 namespace Infrastructure.Gateways
 {
     public class MessageGateway : IMessageGateway
     {
-        public Guid Add(DtoGMessageInfo dto)
+        IInfrastructureDbContext context;
+
+        public MessageGateway(IInfrastructureDbContext context)
         {
-            return Guid.Empty;
+            this.context = context;
         }
 
-        public DtoGMessageInfo Retrieve(Guid id)
+        public Guid Add(DtoMessageInfoGateway dto)
         {
-            return new DtoGMessageInfo();
+            var id = context.Messages.Add(Mapper.Map<MessageEntity>(dto)).Entity.Id;
+            context.SaveChanges();
+            return id;
         }
 
-        public IQueryable<DtoGMessageInfo> Retrieve(DtoGMessageQuery dto)
+        public DtoMessageInfoGateway Retrieve(Guid id)
         {
-            return null;
+            return Mapper.Map<DtoMessageInfoGateway>(context.Messages.Find(id));
         }
 
-        public Guid Modify(DtoGMessageModified dto)
+        public IQueryable<DtoMessageInfoGateway> Retrieve(DtoMessageQueryGateway dto)
+        {
+            var entities = context.Messages.Where(x => x.Sender == dto.Sender && x.Receiver == dto.Receiver);
+            if (entities == null)
+                return new List<DtoMessageInfoGateway>().AsQueryable();
+            else
+                return entities.Select(x => Mapper.Map<DtoMessageInfoGateway>(x));
+        }
+
+        public Guid Modify(DtoMessageModifiedGateway dto)
         {
             return Guid.Empty;
         }

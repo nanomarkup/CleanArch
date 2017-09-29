@@ -20,14 +20,14 @@ namespace TestEntities
             return fixture.Provider.GetService<IMessageEntity>();
         }
 
-        DtoEMessageIdentity CreateDtoMessageIdentity()
+        DtoMessageIdentityEntity CreateDtoMessageIdentity()
         {
-            return new DtoEMessageIdentity()
+            return new DtoMessageIdentityEntity()
             {
                 Sender = Guid.NewGuid(),
                 Receiver = Guid.NewGuid(),
                 Text = "Message",
-                Identity = new DtoEIdentity()
+                Identity = new DtoIdentityEntity()
                 {
                     Id = Guid.NewGuid(),
                     Created = DateTime.Now,
@@ -36,9 +36,9 @@ namespace TestEntities
             };
         }
 
-        DtoEMessage CreateDtoMessageEntity()
+        DtoMessageEntity CreateDtoMessageEntity()
         {
-            return new DtoEMessage()
+            return new DtoMessageEntity()
             {
                 Sender = Guid.NewGuid(),
                 Receiver = Guid.NewGuid(),
@@ -119,19 +119,6 @@ namespace TestEntities
             message.Changed += (sender, args) => { isPropertyChanged = true; };
 
             message.GetType().GetProperty(propertyName).SetValue(message, "New value");
-            Assert.True(isPropertyChanged);
-        }
-
-        [Fact]
-        public void TestSend()
-        {
-            var message = CreateMessageEntity();
-            var dtoMessage = CreateDtoMessageEntity();
-            var isPropertyChanged = false;
-            message.Create(dtoMessage);
-            message.Changed += (sender, args) => { isPropertyChanged = true; };
-
-            message.Send();            
             Assert.True(isPropertyChanged);
         }
     }

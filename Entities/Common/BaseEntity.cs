@@ -9,6 +9,7 @@ namespace Entities
     {
         int updateRef;
         bool isModified;
+        protected bool isInitialized;
 
         public event EntityChangedEventHandler Changed;
 
@@ -33,8 +34,10 @@ namespace Entities
         }
 
         protected virtual void NotifyChanges(string propertyName)
-        {            
-            if (updateRef > 0)
+        {
+            if (!isInitialized)
+                return;
+            else if (updateRef > 0)
                 isModified = true;
             else
             {

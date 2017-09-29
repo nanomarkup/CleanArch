@@ -13,23 +13,23 @@ namespace Core.Entities
         // Identity entity
         IIdentityEntity Identity { get; }
         // Create a new user
-        Guid Create(DtoEUser dto);
+        Guid Create(DtoUserEntity dto);
         // Initialize/load the user
-        void Initialize(DtoEUserIdentity dto);
+        void Initialize(DtoUserIdentityEntity dto);
     }
 
-    public class DtoEUser
+    public class DtoUserEntity
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
     }
 
-    public class DtoEUserIdentity
+    public class DtoUserIdentityEntity
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
-        public DtoEIdentity Identity { get; set; }
+        public DtoIdentityEntity Identity { get; set; }
     }
 }

@@ -20,9 +20,9 @@ namespace TestEntities
             return fixture.Provider.GetService<IIdentityEntity>();
         }
 
-        DtoEIdentity CreateDtoIdentityEntity()
+        DtoIdentityEntity CreateDtoIdentityEntity()
         {
-            return new DtoEIdentity()
+            return new DtoIdentityEntity()
             {
                 Id = Guid.NewGuid(),
                 Created = DateTime.Now,

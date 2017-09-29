@@ -13,35 +13,35 @@ namespace Services
             Provider = provider;
         }
 
-        public IServiceHandler<DtoIUserCreate, DtoIUserId> Create
+        public IServiceHandler<DtoUserCreateInteractor, DtoUserIdInteractor> Create
         {
             get
             {
-                return new BaseService<DtoIUserCreate, DtoIUserId>(x => Provider.GetService<IUserInteractor>().Create(x));
+                return new BaseService<DtoUserCreateInteractor, DtoUserIdInteractor>(x => Provider.GetService<IUserInteractor>().Create(x));
             }
         }
         
-        public IServiceHandler<DtoIUserId, DtoIUserInfo> Retrieve
+        public IServiceHandler<DtoUserIdInteractor, DtoUserInfoInteractor> Retrieve
         {
             get
             {
-                return new BaseService<DtoIUserId, DtoIUserInfo>(x => Provider.GetService<IUserInteractor>().Retrieve(x));
+                return new BaseService<DtoUserIdInteractor, DtoUserInfoInteractor>(x => Provider.GetService<IUserInteractor>().Retrieve(x));
             }
         }
         
-        public IServiceHandler<DtoIUserModify, DtoIUserId> Modify
+        public IServiceHandler<DtoUserModifyInteractor, DtoUserIdInteractor> Modify
         {
             get
             {
-                return new BaseService<DtoIUserModify, DtoIUserId>(x => Provider.GetService<IUserInteractor>().Modify(x));
+                return new BaseService<DtoUserModifyInteractor, DtoUserIdInteractor>(x => Provider.GetService<IUserInteractor>().Modify(x));
             }
         }
 
-        public IServiceHandler<DtoIUserId, DtoIUserId> Delete
+        public IServiceHandler<DtoUserIdInteractor, DtoUserIdInteractor> Delete
         {
             get
             {
-                return new BaseService<DtoIUserId, DtoIUserId>(x => Provider.GetService<IUserInteractor>().Delete(x));
+                return new BaseService<DtoUserIdInteractor, DtoUserIdInteractor>(x => Provider.GetService<IUserInteractor>().Delete(x));
             }
         }        
     }

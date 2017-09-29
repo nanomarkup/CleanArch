@@ -33,30 +33,26 @@ namespace Entities
             };
         }
 
-        public Guid Create(DtoEMessage dto)
+        public Guid Create(DtoMessageEntity dto)
         {
             sender = (dto.Sender == Guid.Empty) ?
                 throw new ArgumentException("GUID value is empty.", nameof(dto.Sender)) : dto.Sender;
             receiver = (dto.Receiver == Guid.Empty) ?
-                throw new ArgumentException("GUID value is empty.", nameof(dto.Receiver)) : dto.Receiver;
+                throw new ArgumentException("GUID value is empty.", nameof(dto.Receiver)) : dto.Receiver;            
             Text = dto.Text;
+            isInitialized = true;
             return Identity.Create();
         }
 
-        public void Initialize(DtoEMessageIdentity dto)
+        public void Initialize(DtoMessageIdentityEntity dto)
         {
             sender = (dto.Sender == Guid.Empty) ?
                 throw new ArgumentException("GUID value is empty.", nameof(dto.Sender)) : dto.Sender;
             receiver = (dto.Receiver == Guid.Empty) ?
                 throw new ArgumentException("GUID value is empty.", nameof(dto.Receiver)) : dto.Receiver;
             Text = dto.Text;
+            isInitialized = true;
             Identity.Initialize(dto.Identity);
-        }
-
-        public Guid Send()
-        {
-            NotifyChanges(nameof(Send));
-            return Identity.Id;
         }
     }
 }

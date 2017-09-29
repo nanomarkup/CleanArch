@@ -6,7 +6,7 @@ using Xunit;
 using Core.Entities;
 using Core.Interactors;
 using Core.Gateways;
-using Core.Mapper;
+using Core.Common;
 using Entities;
 using Interactors;
 using Infrastructure.Gateways;
@@ -19,14 +19,19 @@ namespace TestInteractors
 
         public UserFixture()
         {
+            AutoMapper.Mapper.Initialize(cfg =>
+            {
+                cfg.AddProfile(new EntityProfile());
+                cfg.AddProfile(new GatewayProfile());
+                cfg.AddProfile(new InteractorProfile());
+            });
+
             IServiceCollection services = new ServiceCollection();
             services.AddTransient<IUserEntity, UserEntity>();
             services.AddTransient<IIdentityEntity, IdentityEntity>();
             services.AddTransient<IUserInteractor, UserInteractor>();
             services.AddTransient<IUserGateway, UserGateway>();
-            Provider = services.BuildServiceProvider();
-
-            CoreMapper.Initialize();
+            Provider = services.BuildServiceProvider();            
         }
 
         public void Dispose() { }
@@ -56,7 +61,7 @@ namespace TestInteractors
             var user = CreateUserInteractor();
             if ((new List<string>() { firstName, lastName, email }).All(x => x.Length > 0))
             {
-                var userId = user.Create(new DtoIUserCreate()
+                var userId = user.Create(new DtoUserCreateInteractor()
                 {
                     FirstName = firstName,
                     LastName = lastName,
@@ -67,7 +72,7 @@ namespace TestInteractors
             }
             else
             {
-                var ex = Assert.Throws<ArgumentException>(() => user.Create(new DtoIUserCreate()
+                var ex = Assert.Throws<ArgumentException>(() => user.Create(new DtoUserCreateInteractor()
                 {
                     FirstName = firstName,
                     LastName = lastName,

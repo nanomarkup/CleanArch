@@ -13,25 +13,23 @@ namespace Core.Entities
         // Identity entity
         IIdentityEntity Identity { get; }
         // Create a new message
-        Guid Create(DtoEMessage dto);
+        Guid Create(DtoMessageEntity dto);
         // Initialize/load the message
-        void Initialize(DtoEMessageIdentity dto);
-        // Send message to receiver
-        Guid Send();
+        void Initialize(DtoMessageIdentityEntity dto);
     }
 
-    public class DtoEMessage
+    public class DtoMessageEntity
     {
         public Guid Sender { get; set; }
         public Guid Receiver { get; set; }
         public string Text { get; set; }
     }
 
-    public class DtoEMessageIdentity
+    public class DtoMessageIdentityEntity
     {
         public Guid Sender { get; set; }
         public Guid Receiver { get; set; }
         public string Text { get; set; }
-        public DtoEIdentity Identity { get; set; }
+        public DtoIdentityEntity Identity { get; set; }
     }
 }

@@ -1,27 +1,35 @@
 ﻿using System;
 using System.Linq;
 using Core.Gateways;
+using Infrastructure.Context;
 
 namespace Infrastructure.Gateways
 {  
     public class UserGateway : IUserGateway
     {
-        public Guid Add(DtoGUserInfo dto)
+        IInfrastructureDbContext context;
+
+        public UserGateway(IInfrastructureDbContext context)
+        {
+            this.context = context;
+        }
+
+        public Guid Add(DtoUserInfoGateway dto)
         {
             return Guid.Empty;
         }
 
-        public DtoGUserInfo Retrieve(Guid id)
+        public DtoUserInfoGateway Retrieve(Guid id)
         {
-            return new DtoGUserInfo();
+            return new DtoUserInfoGateway();
         }
 
-        public IQueryable<DtoGUserInfo> Retrieve(DtoGUserQuery dto)
+        public IQueryable<DtoUserInfoGateway> Retrieve(DtoUserQueryGateway dto)
         {
             return null;
         }
 
-        public Guid Modify(DtoGUserModified dto)
+        public Guid Modify(DtoUserModifiedGateway dto)
         {
             return Guid.Empty;
         }

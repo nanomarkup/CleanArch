@@ -3,10 +3,10 @@ using System.Linq;
 
 namespace Core.Gateways
 {
-    public interface IMessageGateway : IPersistenceGateway<DtoGMessageInfo, DtoGMessageModified, DtoGMessageQuery>
+    public interface IMessageGateway : IPersistenceGateway<DtoMessageInfoGateway, DtoMessageModifiedGateway, DtoMessageQueryGateway>
     { }
 
-    public class DtoGMessageInfo
+    public class DtoMessageInfoGateway
     {
         public Guid Id { get; set; }
         public DateTime Created { get; set; }
@@ -16,14 +16,14 @@ namespace Core.Gateways
         public string Text { get; set; }
     }
 
-    public class DtoGMessageModified
+    public class DtoMessageModifiedGateway
     {
         public Guid Id { get; set; }
         public DateTime Modified { get; set; }
         public string Text { get; set; }
     }
 
-    public class DtoGMessageQuery
+    public class DtoMessageQueryGateway
     {
         public Guid Sender { get; set; }
         public Guid Receiver { get; set; }

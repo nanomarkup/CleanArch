@@ -1,8 +1,7 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
-using AutoMapper;
-using Core.Mapper;
+using Core.Common;
 using Core.Entities;
 using Core.Interactors;
 using Entities;
@@ -17,18 +16,18 @@ namespace TestServices
 
         public ServiceFixture()
         {
-            IServiceCollection services = new ServiceCollection();
-            services.AddTransient<IMessageEntity, MessageEntity>();
-            services.AddTransient<IIdentityEntity, IdentityEntity>();
-            services.AddTransient<IMessageInteractor, MessageInteractor>();
-            Provider = services.BuildServiceProvider();
-
-            Mapper.Initialize(cfg =>
+            AutoMapper.Mapper.Initialize(cfg =>
             {
                 cfg.AddProfile(new EntityProfile());
                 cfg.AddProfile(new GatewayProfile());
                 cfg.AddProfile(new InteractorProfile());
             });
+
+            IServiceCollection services = new ServiceCollection();
+            services.AddTransient<IMessageEntity, MessageEntity>();
+            services.AddTransient<IIdentityEntity, IdentityEntity>();
+            services.AddTransient<IMessageInteractor, MessageInteractor>();
+            Provider = services.BuildServiceProvider();            
         }
 
         public void Dispose() { }
@@ -47,7 +46,7 @@ namespace TestServices
         public void TestSendMessage()
         {
             Service.Provider = fixture.Provider;
-            Service.Message.Send.Invoke(new DtoIMessageSend()
+            Service.Message.Send.Invoke(new DtoMessageSendInteractor()
             {
                 Sender = Guid.NewGuid(),
                 Receiver = Guid.NewGuid(),

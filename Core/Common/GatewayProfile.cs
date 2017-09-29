@@ -3,22 +3,27 @@ using Core.Entities;
 using Core.Gateways;
 using Core.Interactors;
 
-namespace Core.Mapper
+namespace Core.Common
 {
     public class GatewayProfile : Profile
     {
         public GatewayProfile()
         {
-            // The destination type should be Gateway DTO (DtoG) for all maps
-            CreateMap<DtoIMessageReadByDate, DtoGMessageQuery>();
+            // The destination type should be Gateway DTO for all maps
+            CreateMap<DtoMessageReadByDateInteractor, DtoMessageQueryGateway>();
 
-            CreateMap<IUserEntity, DtoGUserInfo>()
+            CreateMap<IUserEntity, DtoUserInfoGateway>()
                 .ForMember(dest => dest.Id, opts => opts.MapFrom(src => src.Identity.Id))
                 .ForMember(dest => dest.Created, opts => opts.MapFrom(src => src.Identity.Created))
                 .ForMember(dest => dest.Modified, opts => opts.MapFrom(src => src.Identity.Modified));
 
-            CreateMap<IUserEntity, DtoGUserModified>()
+            CreateMap<IUserEntity, DtoUserModifiedGateway>()
                 .ForMember(dest => dest.Id, opts => opts.MapFrom(src => src.Identity.Id))
+                .ForMember(dest => dest.Modified, opts => opts.MapFrom(src => src.Identity.Modified));
+
+            CreateMap < IMessageEntity, DtoMessageInfoGateway>()
+                .ForMember(dest => dest.Id, opts => opts.MapFrom(src => src.Identity.Id))
+                .ForMember(dest => dest.Created, opts => opts.MapFrom(src => src.Identity.Created))
                 .ForMember(dest => dest.Modified, opts => opts.MapFrom(src => src.Identity.Modified));
         }
     }

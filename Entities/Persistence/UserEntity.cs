@@ -50,19 +50,21 @@ namespace Entities
             };            
         }
 
-        public Guid Create(DtoEUser dto)
+        public Guid Create(DtoUserEntity dto)
         {
             FirstName = dto.FirstName;
             LastName = dto.LastName;
             Email = dto.Email;
+            isInitialized = true;
             return Identity.Create();            
         }
 
-        public void Initialize(DtoEUserIdentity dto)
+        public void Initialize(DtoUserIdentityEntity dto)
         {
             FirstName = dto.FirstName;
             LastName = dto.LastName;
             Email = dto.Email;
+            isInitialized = true;
             Identity.Initialize(dto.Identity);            
         } 
     }
