@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Infrastructure.Entities;
+using Infrastructure.Models;
 
 namespace Infrastructure.Context
 {
@@ -13,6 +13,6 @@ namespace Infrastructure.Context
         public InfrastructureDbContext(DbContextOptions options) : base(options)
         { }
 
-        public DbSet<MessageEntity> Messages { get; set; }
+        public DbSet<MessageModel> Messages { get; set; }
     }
 }

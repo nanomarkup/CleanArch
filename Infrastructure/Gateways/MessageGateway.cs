@@ -4,7 +4,7 @@ using System.Linq;
 using AutoMapper;
 using Core.Gateways;
 using Infrastructure.Context;
-using Infrastructure.Entities;
+using Infrastructure.Models;
 
 namespace Infrastructure.Gateways
 {
@@ -19,7 +19,7 @@ namespace Infrastructure.Gateways
 
         public Guid Add(DtoMessageInfoGateway dto)
         {
-            var id = context.Messages.Add(Mapper.Map<MessageEntity>(dto)).Entity.Id;
+            var id = context.Messages.Add(Mapper.Map<MessageModel>(dto)).Entity.Id;
             context.SaveChanges();
             return id;
         }

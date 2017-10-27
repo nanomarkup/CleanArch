@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Infrastructure.Entities
+namespace Infrastructure.Models
 {
-    public class MessageEntity
+    public class MessageModel
     {
         public Guid Id { get; set; }
         public DateTime Created { get; set; }

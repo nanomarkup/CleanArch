@@ -1,15 +1,8 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Core.Entities;
 using Core.Interactors;
-using Core.Gateways;
+using Loader;
 using Services;
-using Entities;
-using Interactors;
-using Infrastructure.Context;
-using Infrastructure.Gateways;
 
 namespace ConsoleApp
 {
@@ -17,23 +10,8 @@ namespace ConsoleApp
     {
         static void Initialize()
         {
-            AutoMapper.Mapper.Initialize(cfg =>
-            {
-                cfg.AddProfile(new Core.Common.EntityProfile());
-                cfg.AddProfile(new Core.Common.GatewayProfile());
-                cfg.AddProfile(new Core.Common.InteractorProfile());
-                cfg.AddProfile(new Infrastructure.Common.EntityProfile());
-                cfg.AddProfile(new Infrastructure.Common.GatewayProfile());
-            });
-
-            IServiceCollection services = new ServiceCollection();
-            services.AddDbContext<InfrastructureDbContext>(opt => opt.UseInMemoryDatabase("example"), ServiceLifetime.Singleton, ServiceLifetime.Singleton);
-            services.AddTransient<IMessageEntity, MessageEntity>();
-            services.AddTransient<IIdentityEntity, IdentityEntity>();
-            services.AddTransient<IMessageInteractor, MessageInteractor>();            
-            services.AddTransient<IMessageGateway, MessageGateway>();
-            services.AddTransient<IInfrastructureDbContext, InfrastructureDbContext>();
-            Service.Provider = services.BuildServiceProvider();
+            MapperInitializer.Initialize();
+            DependencyInitializer.Initialize();            
         }
 
         static void Main(string[] args)

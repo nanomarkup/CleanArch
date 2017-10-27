@@ -2,14 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
+using AutoMapper;
+using AutoMapper.Configuration;
 using Xunit;
 using Core.Entities;
 using Core.Interactors;
 using Core.Gateways;
-using Core.Common;
+using Core.Mapping;
 using Entities;
 using Interactors;
 using Infrastructure.Gateways;
+using Loader;
 
 namespace TestInteractors
 {
@@ -19,12 +22,9 @@ namespace TestInteractors
 
         public UserFixture()
         {
-            AutoMapper.Mapper.Initialize(cfg =>
-            {
-                cfg.AddProfile(new EntityProfile());
-                cfg.AddProfile(new GatewayProfile());
-                cfg.AddProfile(new InteractorProfile());
-            });
+            var configuration = new MapperConfigurationExpression();
+            configuration.UseCore();
+            Mapper.Initialize(configuration);
 
             IServiceCollection services = new ServiceCollection();
             services.AddTransient<IUserEntity, UserEntity>();

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Infrastructure.Entities
+namespace Infrastructure.Models
 {
-    public class UserEntity
+    public class UserModel
     {
     }
 }

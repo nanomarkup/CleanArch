@@ -3,11 +3,11 @@ using Core.Entities;
 using Core.Gateways;
 using Core.Interactors;
 
-namespace Core.Common
+namespace Core.Mapping
 {
-    public class EntityProfile : Profile
+    public class EntitiesProfile : Profile
     {
-        public EntityProfile()
+        public EntitiesProfile()
         {
             // The destination type should be Entity DTO for all maps
             CreateMap<DtoUserCreateInteractor, DtoUserEntity>();            

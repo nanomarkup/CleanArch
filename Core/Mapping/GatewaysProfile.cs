@@ -3,11 +3,11 @@ using Core.Entities;
 using Core.Gateways;
 using Core.Interactors;
 
-namespace Core.Common
+namespace Core.Mapping
 {
-    public class GatewayProfile : Profile
+    public class GatewaysProfile : Profile
     {
-        public GatewayProfile()
+        public GatewaysProfile()
         {
             // The destination type should be Gateway DTO for all maps
             CreateMap<DtoMessageReadByDateInteractor, DtoMessageQueryGateway>();

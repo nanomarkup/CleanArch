@@ -1,11 +1,14 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
+using AutoMapper;
+using AutoMapper.Configuration;
 using Xunit;
-using Core.Common;
+using Core.Mapping;
 using Core.Entities;
 using Core.Interactors;
 using Entities;
 using Interactors;
+using Loader;
 using Services;
 
 namespace TestServices
@@ -16,12 +19,9 @@ namespace TestServices
 
         public ServiceFixture()
         {
-            AutoMapper.Mapper.Initialize(cfg =>
-            {
-                cfg.AddProfile(new EntityProfile());
-                cfg.AddProfile(new GatewayProfile());
-                cfg.AddProfile(new InteractorProfile());
-            });
+            var configuration = new MapperConfigurationExpression();
+            configuration.UseCore();
+            Mapper.Initialize(configuration);
 
             IServiceCollection services = new ServiceCollection();
             services.AddTransient<IMessageEntity, MessageEntity>();

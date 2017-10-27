@@ -3,11 +3,11 @@ using AutoMapper;
 using Core.Gateways;
 using Core.Interactors;
 
-namespace Core.Common
+namespace Core.Mapping
 {
-    public class InteractorProfile : Profile
+    public class InteractorsProfile : Profile
     {
-        public InteractorProfile()
+        public InteractorsProfile()
         {
             // The destination type should be Interactor DTO for all maps
             CreateMap<DtoUserInfoGateway, DtoUserInfoInteractor>();
