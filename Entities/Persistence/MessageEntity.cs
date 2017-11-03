@@ -1,58 +1,23 @@
-﻿using System;
-using Core.Entities;
+﻿using Core.Entities;
+using Core.Models;
+using System;
 
 namespace Entities
 {
-    public class MessageEntity : BaseEntity, IMessageEntity
+    public class MessageEntity : BaseEntity<IMessageModel>, IMessageEntity<IMessageModel>
     {
-        Guid sender;
-        Guid receiver;
-        string text;
-
-        public Guid Sender { get { return sender; } }
-        public Guid Receiver { get { return receiver; } }
-
-        public string Text
+        public override void Validate(IMessageModel attrs)
         {
-            get { return text; }
-            set
-            {
-                text = (string.IsNullOrEmpty(value)) ? throw new ArgumentException("Text is empty.", nameof(Text)) : value;
-                NotifyChanges(nameof(Text));
-            }
+            if (attrs.Id == Guid.Empty)
+                throw new ArgumentException("GUID value is empty.", nameof(attrs.Id));
+            if (attrs.Modified < attrs.Created)
+                throw new ArgumentException("The modified date less than the created date.", nameof(attrs.Modified));
+            if (attrs.Sender == Guid.Empty) 
+                throw new ArgumentException("GUID value is empty.", nameof(attrs.Sender));
+            if (attrs.Receiver == Guid.Empty) 
+                throw new ArgumentException("GUID value is empty.", nameof(attrs.Receiver));
+            if (string.IsNullOrEmpty(attrs.Text))
+                throw new ArgumentException("String value is empty.", nameof(attrs.Text));
         }
-
-        public IIdentityEntity Identity { get; }
-
-        public MessageEntity(IIdentityEntity identity)
-        {
-            Identity = identity;
-            identity.Changed += (sender, args) =>
-            {
-                NotifyChanges(nameof(IIdentityEntity));
-            };
-        }
-
-        public Guid Create(DtoMessageEntity dto)
-        {
-            sender = (dto.Sender == Guid.Empty) ?
-                throw new ArgumentException("GUID value is empty.", nameof(dto.Sender)) : dto.Sender;
-            receiver = (dto.Receiver == Guid.Empty) ?
-                throw new ArgumentException("GUID value is empty.", nameof(dto.Receiver)) : dto.Receiver;            
-            Text = dto.Text;
-            isInitialized = true;
-            return Identity.Create();
-        }
-
-        public void Initialize(DtoMessageIdentityEntity dto)
-        {
-            sender = (dto.Sender == Guid.Empty) ?
-                throw new ArgumentException("GUID value is empty.", nameof(dto.Sender)) : dto.Sender;
-            receiver = (dto.Receiver == Guid.Empty) ?
-                throw new ArgumentException("GUID value is empty.", nameof(dto.Receiver)) : dto.Receiver;
-            Text = dto.Text;
-            isInitialized = true;
-            Identity.Initialize(dto.Identity);
-        }
-    }
+    }    
 }

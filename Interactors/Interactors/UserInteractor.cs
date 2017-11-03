@@ -1,8 +1,9 @@
-﻿using System;
+﻿using AutoMapper;
 using Core.Entities;
 using Core.Gateways;
 using Core.Interactors;
-using AutoMapper;
+using Core.Models;
+using System;
 
 namespace Interactors
 {
@@ -12,13 +13,19 @@ namespace Interactors
 
         public DtoUserIdInteractor Create(DtoUserCreateInteractor dto)
         {
-            var user = GetService<IUserEntity>();            
+            var model = Mapper.Map<UserModel>(dto);
+            model.Id = Guid.NewGuid();
+            model.Created = DateTime.Now;
+            model.Modified = model.Created;
+
+            var user = GetService<IUserEntity<IUserModel>>();            
             user.Changed += (sender, args) => 
             {
                 // Add a new user to the infrastructure
-                GetService<IUserGateway>().Add(Mapper.Map<DtoUserInfoGateway>(user));
+                GetService<IUserGateway>().Add(Mapper.Map<DtoUserInfoGateway>(user.Attrs));
             };
-            return new DtoUserIdInteractor() { Id = user.Create(Mapper.Map<DtoUserEntity>(dto)) };
+            user.Create(model);
+            return new DtoUserIdInteractor() { Id = user.Attrs.Id };
         }
 
         public DtoUserInfoInteractor Retrieve(DtoUserIdInteractor id)
@@ -29,9 +36,9 @@ namespace Interactors
         public DtoUserIdInteractor Modify(DtoUserModifyInteractor dto)
         {            
             // Read user from the infrastructure
-            var user = GetService<IUserEntity>();
+            var user = GetService<IUserEntity<IUserModel>>();
             var userInfo = GetService<IUserGateway>().Retrieve(dto.Id);
-            user.Initialize(Mapper.Map<DtoUserIdentityEntity>(userInfo));
+            user.Initialize(Mapper.Map<UserModel>(userInfo));
             user.Changed += (sender, args) =>
             {
                 // Modify user in the infrastructure
@@ -42,15 +49,15 @@ namespace Interactors
             user.BeginUpdate();
             try
             {
-                user.FirstName = dto.FirstName;
-                user.LastName = dto.LastName;
-                user.Email = dto.Email;
+                user.Attrs.FirstName = dto.FirstName;
+                user.Attrs.LastName = dto.LastName;
+                user.Attrs.Email = dto.Email;
             }
             finally
             {
                 user.EndUpdate();
             }
-            return new DtoUserIdInteractor() { Id = user.Identity.Id };
+            return new DtoUserIdInteractor() { Id = user.Attrs.Id };
         }
 
         public DtoUserIdInteractor Delete(DtoUserIdInteractor id)

@@ -1,71 +1,23 @@
-﻿using System;
-using Core.Entities;
+﻿using Core.Entities;
+using Core.Models;
+using System;
 
 namespace Entities
-{
-    public class UserEntity : BaseEntity, IUserEntity
+{   
+    public class UserEntity : BaseEntity<IUserModel>, IUserEntity<IUserModel>
     {
-        string firstName;
-        string lastName;
-        string email;   
-
-        public string FirstName
+        public override void Validate(IUserModel attrs)
         {
-            get { return firstName; }
-            set
-            {
-                firstName = (string.IsNullOrEmpty(value)) ? throw new ArgumentException("First Name is empty.", nameof(FirstName)) : value;
-                NotifyChanges(nameof(FirstName));
-            }
-        }
-
-        public string LastName
-        {
-            get { return lastName; }
-            set
-            {
-                lastName = (string.IsNullOrEmpty(value)) ? throw new ArgumentException("Last Name is empty.", nameof(LastName)) : value;
-                NotifyChanges(nameof(LastName));
-            }
-        }
-
-        public string Email
-        {
-            get { return email; }
-            set
-            {
-                email = (string.IsNullOrEmpty(value)) ? throw new ArgumentException("Email address is empty.", nameof(Email)) : value;
-                NotifyChanges(nameof(Email));
-            }
-        }
-
-        public IIdentityEntity Identity { get; }
-
-        public UserEntity(IIdentityEntity identity)
-        {
-            Identity = identity;
-            identity.Changed += (sender, args) =>
-            {
-                NotifyChanges(nameof(IIdentityEntity));
-            };            
-        }
-
-        public Guid Create(DtoUserEntity dto)
-        {
-            FirstName = dto.FirstName;
-            LastName = dto.LastName;
-            Email = dto.Email;
-            isInitialized = true;
-            return Identity.Create();            
-        }
-
-        public void Initialize(DtoUserIdentityEntity dto)
-        {
-            FirstName = dto.FirstName;
-            LastName = dto.LastName;
-            Email = dto.Email;
-            isInitialized = true;
-            Identity.Initialize(dto.Identity);            
-        } 
+            if (attrs.Id == Guid.Empty)
+                throw new ArgumentException("GUID value is empty.", nameof(attrs.Id));
+            if (attrs.Modified < attrs.Created)
+                throw new ArgumentException("The modified date less than the created date.", nameof(attrs.Modified));
+            if (string.IsNullOrEmpty(attrs.FirstName)) 
+                throw new ArgumentException("String value is empty.", nameof(attrs.FirstName));
+            if (string.IsNullOrEmpty(attrs.LastName))
+                throw new ArgumentException("String value is empty.", nameof(attrs.LastName));
+            if (string.IsNullOrEmpty(attrs.Email))
+                throw new ArgumentException("String value is empty.", nameof(attrs.Email));
+        }     
     }
 }

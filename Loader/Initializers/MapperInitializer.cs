@@ -2,6 +2,7 @@
 using AutoMapper.Configuration;
 using Core.Mapping;
 using Infrastructure.Mapping;
+using Services.Mapping;
 
 namespace Loader
 {
@@ -11,21 +12,21 @@ namespace Loader
         {
             var configuration = new MapperConfigurationExpression();
             configuration.UseCore();
-            configuration.UseInfrastructure();
+            configuration.UseServices();
             Mapper.Initialize(configuration);
         }
 
         public static void UseCore(this MapperConfigurationExpression configuration)
         {
+            UseModels(configuration);
             UseEntities(configuration);
             UseGateways(configuration);
             UseInteractors(configuration);
         }
 
-        public static void UseInfrastructure(this MapperConfigurationExpression configuration)
+        public static void UseModels(this MapperConfigurationExpression configuration)
         {
             configuration.AddProfile(new ModelsProfile());
-            configuration.AddProfile(new Infrastructure.Mapping.GatewaysProfile());
         }
 
         public static void UseEntities(this MapperConfigurationExpression configuration)
@@ -35,12 +36,17 @@ namespace Loader
 
         public static void UseGateways(this MapperConfigurationExpression configuration)
         {
-            configuration.AddProfile(new Core.Mapping.GatewaysProfile());
+            configuration.AddProfile(new GatewaysProfile());
         }
 
         public static void UseInteractors(this MapperConfigurationExpression configuration)
         {
             configuration.AddProfile(new InteractorsProfile());
-        }        
+        }    
+        
+        public static void UseServices(this MapperConfigurationExpression configuration)
+        {
+            configuration.AddProfile(new ServicesProfile());
+        }
     }
 }

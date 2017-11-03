@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Core.Gateways;
-using Infrastructure.Models;
+using Core.Interactors;
+using Core.Models;
 
 namespace Infrastructure.Mapping
 {
@@ -10,6 +11,8 @@ namespace Infrastructure.Mapping
         {
             // The destination type should be Model object for all maps
             CreateMap<DtoMessageInfoGateway, MessageModel>();
+            CreateMap<DtoMessageSendInteractor, MessageModel>();
+            CreateMap<DtoUserCreateInteractor, UserModel>();
         }
     }
 }

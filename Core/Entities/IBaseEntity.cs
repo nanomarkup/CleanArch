@@ -2,28 +2,35 @@
 
 namespace Core.Entities
 {
-    public interface IBaseEntity
+    public interface IBaseEntity<IAttrs>
+        where IAttrs : IPoco
     {
+        // Entity attributes
+        IAttrs Attrs { get; }
         // Occurs when an entity is changed.
-        event EntityChangedEventHandler Changed;
+        event ChangedEntityEventHandler Changed;
+        // Create a new entity
+        void Create(IAttrs attrs);
+        // Initialize/load the entity
+        void Initialize(IAttrs attrs);
+        // Validate attributes
+        void Validate(IAttrs attrs);
         // Lock the handling of Changed event
         void BeginUpdate();
         // Unlock the handling of Changed event
-        void EndUpdate();
-        // Is entity modified
-        bool IsModified();        
+        void EndUpdate();         
     }    
 
     // Represents the method that will handle the IBaseEntity.Changed event raised when an entity is changed.
-    public delegate void EntityChangedEventHandler(object sender, EntityChangedEventArgs e);
+    public delegate void ChangedEntityEventHandler(object sender, ChangedEntityEventArgs e);
 
-    public class EntityChangedEventArgs : EventArgs
+    public class ChangedEntityEventArgs : EventArgs
     {
-        public virtual string PropertyName { get; }
+        public virtual string AttributeName { get; }
 
-        public EntityChangedEventArgs(string propertyName)
+        public ChangedEntityEventArgs(string attributeName)
         {
-            PropertyName = propertyName;
+            AttributeName = attributeName;
         }
     }
 }

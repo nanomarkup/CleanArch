@@ -1,11 +1,12 @@
-﻿using System;
-using Microsoft.Extensions.DependencyInjection;
-using Xunit;
-using Core.Entities;
+﻿using Core.Entities;
+using Core.Models;
 using Entities;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using Xunit;
 
 namespace TestEntities
-{   
+{
     public class MessageEntityTests : IClassFixture<MessageFixture>
     {
         readonly MessageFixture fixture;
@@ -15,31 +16,19 @@ namespace TestEntities
             this.fixture = fixture;
         }
 
-        IMessageEntity CreateMessageEntity()
+        IMessageEntity<IMessageModel> CreateEntity()
         {
-            return fixture.Provider.GetService<IMessageEntity>();
-        }
+            return fixture.Provider.GetService<IMessageEntity<IMessageModel>>();
+        }        
 
-        DtoMessageIdentityEntity CreateDtoMessageIdentity()
+        IMessageModel CreateModel()
         {
-            return new DtoMessageIdentityEntity()
+            var created = DateTime.Now;
+            return new MessageModel()
             {
-                Sender = Guid.NewGuid(),
-                Receiver = Guid.NewGuid(),
-                Text = "Message",
-                Identity = new DtoIdentityEntity()
-                {
-                    Id = Guid.NewGuid(),
-                    Created = DateTime.Now,
-                    Modified = DateTime.Now
-                }
-            };
-        }
-
-        DtoMessageEntity CreateDtoMessageEntity()
-        {
-            return new DtoMessageEntity()
-            {
+                Id = Guid.NewGuid(),
+                Created = created,
+                Modified = created,
                 Sender = Guid.NewGuid(),
                 Receiver = Guid.NewGuid(),
                 Text = "Message"
@@ -49,76 +38,52 @@ namespace TestEntities
         [Fact]
         public void TestEmptyObject()
         {
-            var message = CreateMessageEntity();
-            Assert.Equal(default(Guid), message.Identity.Id);
-            Assert.Equal(default(DateTime), message.Identity.Created);
-            Assert.Equal(default(DateTime), message.Identity.Modified);
-            Assert.Equal(default(Guid), message.Sender);
-            Assert.Equal(default(Guid), message.Receiver);
-            Assert.Equal(default(string), message.Text);
+            var entity = CreateEntity();
+            Assert.Null(entity.Attrs);
         }
 
         [Fact]
         public void TestCreation()
         {
-            var message = CreateMessageEntity();
-            var dtoMessage = CreateDtoMessageEntity();
-            message.Create(dtoMessage);
-            Assert.NotNull(message.Identity.Id);
-            Assert.False(message.Identity.Id == Guid.Empty);
-            Assert.Equal(DateTime.Now.ToShortDateString(), message.Identity.Created.ToShortDateString());
-            Assert.Equal(DateTime.Now.ToShortDateString(), message.Identity.Modified.ToShortDateString());
-            Assert.Equal(dtoMessage.Sender, message.Sender);
-            Assert.Equal(dtoMessage.Receiver, message.Receiver);
-            Assert.Equal(dtoMessage.Text, message.Text);
+            var model = CreateModel();
+            var entity = CreateEntity();
+            entity.Create(model);
+            Assert.NotNull(entity.Attrs.Id);
+            Assert.False(entity.Attrs.Id == Guid.Empty);
+            Assert.True(model.Id == entity.Attrs.Id);
+            Assert.Equal(model.Created, entity.Attrs.Created);
+            Assert.Equal(model.Modified, entity.Attrs.Modified);
+            Assert.Equal(model.Sender, entity.Attrs.Sender);
+            Assert.Equal(model.Receiver, entity.Attrs.Receiver);
+            Assert.Equal(model.Text, entity.Attrs.Text);
         }
 
         [Fact]
         public void TestInitialization()
         {
-            var message = CreateMessageEntity();
-            var dtoMessage = CreateDtoMessageIdentity();
-            message.Initialize(dtoMessage);
-            Assert.True(dtoMessage.Identity.Id == message.Identity.Id);
-            Assert.Equal(dtoMessage.Identity.Created, message.Identity.Created);
-            Assert.Equal(dtoMessage.Identity.Modified, message.Identity.Modified);
-            Assert.Equal(dtoMessage.Sender, message.Sender);
-            Assert.Equal(dtoMessage.Receiver, message.Receiver);
-            Assert.Equal(dtoMessage.Text, message.Text);
-        }
-
-        [Theory]
-        [InlineData("Text")]
-        public void TestIsModified(string propertyName)
-        {
-            var message = CreateMessageEntity();
-            var dtoMessage = CreateDtoMessageIdentity();
-            var property = message.GetType().GetProperty(propertyName);
-            message.Initialize(dtoMessage);
-
-            Assert.False(message.IsModified());
-            property.SetValue(message, "New value 1");
-            Assert.False(message.IsModified());
-
-            message.BeginUpdate();
-            Assert.False(message.IsModified());
-            property.SetValue(message, "New value 2");
-            Assert.True(message.IsModified());
-            message.EndUpdate();
-            Assert.False(message.IsModified());
+            var model = CreateModel();
+            var entity = CreateEntity();
+            entity.Initialize(model);
+            Assert.NotNull(entity.Attrs.Id);
+            Assert.False(entity.Attrs.Id == Guid.Empty);
+            Assert.True(model.Id == entity.Attrs.Id);
+            Assert.Equal(model.Created, entity.Attrs.Created);
+            Assert.Equal(model.Modified, entity.Attrs.Modified);
+            Assert.Equal(model.Sender, entity.Attrs.Sender);
+            Assert.Equal(model.Receiver, entity.Attrs.Receiver);
+            Assert.Equal(model.Text, entity.Attrs.Text);
         }
 
         [Theory]
         [InlineData("Text")]
         public void TestChangedEvent(string propertyName)
         {
-            var message = CreateMessageEntity();
-            var dtoMessage = CreateDtoMessageEntity();
-            var isPropertyChanged = false;            
-            message.Create(dtoMessage);
-            message.Changed += (sender, args) => { isPropertyChanged = true; };
+            var entity = CreateEntity();
+            entity.Create(CreateModel());
 
-            message.GetType().GetProperty(propertyName).SetValue(message, "New value");
+            var isPropertyChanged = false;
+            entity.Changed += (sender, args) => { isPropertyChanged = true; };
+            entity.Attrs.GetType().GetProperty(propertyName).SetValue(entity.Attrs, "New value");
             Assert.True(isPropertyChanged);
         }
     }
@@ -130,8 +95,7 @@ namespace TestEntities
         public MessageFixture()
         {
             IServiceCollection services = new ServiceCollection();
-            services.AddTransient<IMessageEntity, MessageEntity>();
-            services.AddTransient<IIdentityEntity, IdentityEntity>();
+            services.AddTransient<IMessageEntity<IMessageModel>, MessageEntity>();
             Provider = services.BuildServiceProvider();
         }
 

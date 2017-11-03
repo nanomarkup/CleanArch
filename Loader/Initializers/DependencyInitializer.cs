@@ -1,6 +1,7 @@
 ﻿using Core.Entities;
 using Core.Gateways;
 using Core.Interactors;
+using Core.Models;
 using Entities;
 using Infrastructure.Context;
 using Infrastructure.Gateways;
@@ -27,21 +28,18 @@ namespace Loader
 
         public static void UseEntities(this IServiceCollection service)
         {
-            service.AddTransient<IIdentityEntity, IdentityEntity>();
-            service.AddTransient<IMessageEntity, MessageEntity>();
-            service.AddTransient<IUserEntity, UserEntity>();
+            service.AddTransient<IMessageEntity<IMessageModel>, MessageEntity>();
+            service.AddTransient<IUserEntity<IUserModel>, UserEntity>();
         }
 
         public static void UseEntities(this IServiceCollection service, IEnumerable<Type> interfaces)
         {
             foreach (var type in interfaces)
             {
-                if (type == typeof(IIdentityEntity))
-                    service.AddTransient<IIdentityEntity, IdentityEntity>();
-                else if (type == typeof(IMessageEntity))
-                    service.AddTransient<IMessageEntity, MessageEntity>();
-                else if (type == typeof(IUserEntity))
-                    service.AddTransient<IUserEntity, UserEntity>();
+                if (type == typeof(IMessageEntity<IMessageModel>))
+                    service.AddTransient<IMessageEntity<IMessageModel>, MessageEntity>();
+                else if (type == typeof(IUserEntity<IUserModel>))
+                    service.AddTransient<IUserEntity<IUserModel>, UserEntity>();
             }
         }
 

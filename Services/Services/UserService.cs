@@ -1,6 +1,7 @@
-﻿using System;
-using Microsoft.Extensions.DependencyInjection;
+﻿using AutoMapper;
 using Core.Interactors;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Services
 {
@@ -13,36 +14,70 @@ namespace Services
             Provider = provider;
         }
 
-        public IServiceHandler<DtoUserCreateInteractor, DtoUserIdInteractor> Create
+        public IServiceHandler<DtoServiceUserCreate, DtoServiceUserId> Create
         {
             get
             {
-                return new BaseService<DtoUserCreateInteractor, DtoUserIdInteractor>(x => Provider.GetService<IUserInteractor>().Create(x));
+                return new BaseService<DtoServiceUserCreate, DtoServiceUserId>(x => 
+                    Mapper.Map<DtoServiceUserId>(Provider.GetService<IUserInteractor>().Create(Mapper.Map<DtoUserCreateInteractor>(x))));
             }
         }
         
-        public IServiceHandler<DtoUserIdInteractor, DtoUserInfoInteractor> Retrieve
+        public IServiceHandler<DtoServiceUserId, DtoServiceUserInfo> Retrieve
         {
             get
             {
-                return new BaseService<DtoUserIdInteractor, DtoUserInfoInteractor>(x => Provider.GetService<IUserInteractor>().Retrieve(x));
+                return new BaseService<DtoServiceUserId, DtoServiceUserInfo>(x => 
+                    Mapper.Map<DtoServiceUserInfo>(Provider.GetService<IUserInteractor>().Retrieve(Mapper.Map<DtoUserIdInteractor>(x))));
             }
         }
         
-        public IServiceHandler<DtoUserModifyInteractor, DtoUserIdInteractor> Modify
+        public IServiceHandler<DtoServiceUserModify, DtoServiceUserId> Modify
         {
             get
             {
-                return new BaseService<DtoUserModifyInteractor, DtoUserIdInteractor>(x => Provider.GetService<IUserInteractor>().Modify(x));
+                return new BaseService<DtoServiceUserModify, DtoServiceUserId>(x => 
+                    Mapper.Map<DtoServiceUserId>(Provider.GetService<IUserInteractor>().Modify(Mapper.Map<DtoUserModifyInteractor>(x))));
             }
         }
 
-        public IServiceHandler<DtoUserIdInteractor, DtoUserIdInteractor> Delete
+        public IServiceHandler<DtoServiceUserId, DtoServiceUserId> Delete
         {
             get
             {
-                return new BaseService<DtoUserIdInteractor, DtoUserIdInteractor>(x => Provider.GetService<IUserInteractor>().Delete(x));
+                return new BaseService<DtoServiceUserId, DtoServiceUserId>(x => 
+                    Mapper.Map<DtoServiceUserId>(Provider.GetService<IUserInteractor>().Delete(Mapper.Map<DtoUserIdInteractor>(x))));
             }
         }        
+    }
+
+    public class DtoServiceUserId
+    {
+        public Guid Id { get; set; }
+    }
+
+    public class DtoServiceUserInfo
+    {
+        public Guid Id { get; set; }
+        public DateTime Created { get; set; }
+        public DateTime Modified { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+    }
+
+    public class DtoServiceUserCreate
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+    }
+
+    public class DtoServiceUserModify
+    {
+        public Guid Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
     }
 }

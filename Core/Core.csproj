@@ -8,4 +8,16 @@
     <PackageReference Include="AutoMapper" Version="6.1.1" />
   </ItemGroup>
 
+  <Target Name="InpcInjection" AfterTargets="Build">
+    <Message Importance="High" Text="Add INotifyPropertyChanged implementation (injection)." />
+    <PropertyGroup>      
+      <BuilderName>"$(SolutionDir)Builder\bin\$(Configuration)\Builder.exe"</BuilderName>
+      <BuilderCommand>InpcInjection</BuilderCommand>
+      <AssemblyToInject>"$(SolutionDir)$(AssemblyName)\$(OutputPath)$(AssemblyName).dll"</AssemblyToInject>
+      <AttrName>Core.PropertyChangedAttribute</AttrName>
+      <MethodName>NotifyPropertyChanged</MethodName>
+    </PropertyGroup>
+    <Exec Command="$(BuilderName) $(BuilderCommand) $(AssemblyToInject) $(AttrName) $(MethodName)" />
+  </Target>
+
 </Project>

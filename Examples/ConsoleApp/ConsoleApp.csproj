@@ -10,7 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Core.csproj" />
     <ProjectReference Include="..\..\Loader\Loader.csproj" />
     <ProjectReference Include="..\..\Services\Services.csproj" />
   </ItemGroup>

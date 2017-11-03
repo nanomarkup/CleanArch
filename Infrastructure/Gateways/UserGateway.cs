@@ -1,10 +1,10 @@
-﻿using System;
-using System.Linq;
-using Core.Gateways;
+﻿using Core.Gateways;
 using Infrastructure.Context;
+using System;
+using System.Linq;
 
 namespace Infrastructure.Gateways
-{  
+{
     public class UserGateway : IUserGateway
     {
         IInfrastructureDbContext context;

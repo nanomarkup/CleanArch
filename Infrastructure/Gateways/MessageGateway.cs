@@ -1,10 +1,10 @@
-﻿using System;
+﻿using AutoMapper;
+using Core.Gateways;
+using Core.Models;
+using Infrastructure.Context;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutoMapper;
-using Core.Gateways;
-using Infrastructure.Context;
-using Infrastructure.Models;
 
 namespace Infrastructure.Gateways
 {
