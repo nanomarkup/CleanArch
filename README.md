@@ -1,11 +1,11 @@
 # CleanArch
-My name is Vitalii Noga. This is my vision of the Clean Architecture implementation with using C#.
+My name is Vitalii Noga. This is my vision of the Clean Architecture implementation with using C#.<br>
 The original principles of Clean Architecture by Uncle Bob Martin at https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html.
 
 ## CleanArch implementation
 ![CleanArch structure](CleanArch.png)
 
-Where:
+Where:<br>
 **Model** is POCO object with INotifyPropertyChanged implementation. Model is persistent.<br>
 **IEntity/Entity** includes independent/model business logic.<br>
 **IInteractor/Interactor** includes dependent/application business logic.<br>
