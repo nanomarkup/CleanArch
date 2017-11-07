@@ -4,7 +4,7 @@ using System;
 
 namespace Entities
 {   
-    public class UserEntity : BaseEntity<IUserModel>, IUserEntity<IUserModel>
+    public class UserEntity : BaseEntity<IUserModel>, IUserEntity
     {
         public override void Validate(IUserModel attrs)
         {

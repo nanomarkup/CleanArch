@@ -16,9 +16,9 @@ namespace TestEntities
             this.fixture = fixture;
         }
 
-        IMessageEntity<IMessageModel> CreateEntity()
+        IMessageEntity CreateEntity()
         {
-            return fixture.Provider.GetService<IMessageEntity<IMessageModel>>();
+            return fixture.Provider.GetService<IMessageEntity>();
         }        
 
         IMessageModel CreateModel()
@@ -95,7 +95,7 @@ namespace TestEntities
         public MessageFixture()
         {
             IServiceCollection services = new ServiceCollection();
-            services.AddTransient<IMessageEntity<IMessageModel>, MessageEntity>();
+            services.AddTransient<IMessageEntity, MessageEntity>();
             Provider = services.BuildServiceProvider();
         }
 

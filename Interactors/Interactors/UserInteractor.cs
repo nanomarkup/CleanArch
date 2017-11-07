@@ -18,11 +18,11 @@ namespace Interactors
             model.Created = DateTime.Now;
             model.Modified = model.Created;
 
-            var user = GetService<IUserEntity<IUserModel>>();            
+            var user = GetService<IUserEntity>();            
             user.Changed += (sender, args) => 
             {
                 // Add a new user to the infrastructure
-                GetService<IUserGateway>().Add(Mapper.Map<DtoUserInfoGateway>(user.Attrs));
+                GetService<IUserGateway>().Add(user.Attrs as UserModel);
             };
             user.Create(model);
             return new DtoUserIdInteractor() { Id = user.Attrs.Id };
@@ -36,7 +36,7 @@ namespace Interactors
         public DtoUserIdInteractor Modify(DtoUserModifyInteractor dto)
         {            
             // Read user from the infrastructure
-            var user = GetService<IUserEntity<IUserModel>>();
+            var user = GetService<IUserEntity>();
             var userInfo = GetService<IUserGateway>().Retrieve(dto.Id);
             user.Initialize(Mapper.Map<UserModel>(userInfo));
             user.Changed += (sender, args) =>

@@ -3,14 +3,14 @@ using System.Linq;
 
 namespace Core.Gateways
 {
-    public interface IPersistenceGateway<DtoInfo, DtoModify, DtoQuery> 
-        where DtoInfo : class
+    public interface IPersistenceGateway<Model, DtoModify, DtoQuery> 
+        where Model : class
         where DtoModify : class
         where DtoQuery : class
     {
-        Guid Add(DtoInfo dto);
-        DtoInfo Retrieve(Guid id);
-        IQueryable<DtoInfo> Retrieve(DtoQuery dto);
+        Guid Add(Model model);
+        Model Retrieve(Guid id);
+        IQueryable<Model> Retrieve(DtoQuery dto);
         Guid Modify(DtoModify dto);
         Guid Delete(Guid id);
     }

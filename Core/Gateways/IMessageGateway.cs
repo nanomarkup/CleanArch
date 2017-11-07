@@ -1,20 +1,10 @@
-﻿using System;
-using System.Linq;
+﻿using Core.Models;
+using System;
 
 namespace Core.Gateways
 {
-    public interface IMessageGateway : IPersistenceGateway<DtoMessageInfoGateway, DtoMessageModifiedGateway, DtoMessageQueryGateway>
+    public interface IMessageGateway : IPersistenceGateway<MessageModel, DtoMessageModifiedGateway, DtoMessageQueryGateway>
     { }
-
-    public class DtoMessageInfoGateway
-    {
-        public Guid Id { get; set; }
-        public DateTime Created { get; set; }
-        public DateTime Modified { get; set; }
-        public Guid Sender { get; set; }
-        public Guid Receiver { get; set; }
-        public string Text { get; set; }
-    }
 
     public class DtoMessageModifiedGateway
     {

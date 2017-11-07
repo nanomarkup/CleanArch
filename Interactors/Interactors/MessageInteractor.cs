@@ -20,8 +20,8 @@ namespace Interactors
             model.Created = DateTime.Now;
             model.Modified = model.Created;
 
-            var message = GetService<IMessageEntity<IMessageModel>>();
-            message.Changed += (sender, args) => { GetService<IMessageGateway>().Add(Mapper.Map<DtoMessageInfoGateway>(message.Attrs)); };
+            var message = GetService<IMessageEntity>();
+            message.Changed += (sender, args) => { GetService<IMessageGateway>().Add(message.Attrs as MessageModel); };
             message.Create(model);
             return new DtoMessageIdInteractor() { Id = message.Attrs.Id };
         }

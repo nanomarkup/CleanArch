@@ -4,7 +4,7 @@ using System;
 
 namespace Entities
 {
-    public class MessageEntity : BaseEntity<IMessageModel>, IMessageEntity<IMessageModel>
+    public class MessageEntity : BaseEntity<IMessageModel>, IMessageEntity
     {
         public override void Validate(IMessageModel attrs)
         {

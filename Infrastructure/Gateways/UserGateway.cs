@@ -1,4 +1,5 @@
 ﻿using Core.Gateways;
+using Core.Models;
 using Infrastructure.Context;
 using System;
 using System.Linq;
@@ -14,17 +15,17 @@ namespace Infrastructure.Gateways
             this.context = context;
         }
 
-        public Guid Add(DtoUserInfoGateway dto)
+        public Guid Add(UserModel model)
         {
             return Guid.Empty;
         }
 
-        public DtoUserInfoGateway Retrieve(Guid id)
+        public UserModel Retrieve(Guid id)
         {
-            return new DtoUserInfoGateway();
+            return new UserModel();
         }
 
-        public IQueryable<DtoUserInfoGateway> Retrieve(DtoUserQueryGateway dto)
+        public IQueryable<UserModel> Retrieve(DtoUserQueryGateway dto)
         {
             return null;
         }

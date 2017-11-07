@@ -28,18 +28,18 @@ namespace Loader
 
         public static void UseEntities(this IServiceCollection service)
         {
-            service.AddTransient<IMessageEntity<IMessageModel>, MessageEntity>();
-            service.AddTransient<IUserEntity<IUserModel>, UserEntity>();
+            service.AddTransient<IMessageEntity, MessageEntity>();
+            service.AddTransient<IUserEntity, UserEntity>();
         }
 
         public static void UseEntities(this IServiceCollection service, IEnumerable<Type> interfaces)
         {
             foreach (var type in interfaces)
             {
-                if (type == typeof(IMessageEntity<IMessageModel>))
-                    service.AddTransient<IMessageEntity<IMessageModel>, MessageEntity>();
-                else if (type == typeof(IUserEntity<IUserModel>))
-                    service.AddTransient<IUserEntity<IUserModel>, UserEntity>();
+                if (type == typeof(IMessageEntity))
+                    service.AddTransient<IMessageEntity, MessageEntity>();
+                else if (type == typeof(IUserEntity))
+                    service.AddTransient<IUserEntity, UserEntity>();
             }
         }
 

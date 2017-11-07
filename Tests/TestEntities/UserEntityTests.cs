@@ -16,9 +16,9 @@ namespace TestEntities
             this.fixture = fixture;
         }
 
-        IUserEntity<IUserModel> CreateEntity()
+        IUserEntity CreateEntity()
         {
-            return fixture.Provider.GetService<IUserEntity<IUserModel>>();
+            return fixture.Provider.GetService<IUserEntity>();
         }
 
         IUserModel CreateModel()
@@ -97,7 +97,7 @@ namespace TestEntities
         public UserFixture()
         {
             IServiceCollection services = new ServiceCollection();
-            services.AddTransient<IUserEntity<IUserModel>, UserEntity>();
+            services.AddTransient<IUserEntity, UserEntity>();
             Provider = services.BuildServiceProvider();
         }
 

@@ -1,8 +1,8 @@
-﻿
+﻿using Core.Models;
+
 namespace Core.Entities
 {   
-    public interface IMessageEntity<IMessageEntityAttrs> : IBaseEntity<IMessageEntityAttrs>
-        where IMessageEntityAttrs : IPoco
+    public interface IMessageEntity : IBaseEntity<IMessageModel>
     {
         
     }

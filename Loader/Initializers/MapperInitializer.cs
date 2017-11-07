@@ -19,7 +19,6 @@ namespace Loader
         public static void UseCore(this MapperConfigurationExpression configuration)
         {
             UseModels(configuration);
-            UseEntities(configuration);
             UseGateways(configuration);
             UseInteractors(configuration);
         }
@@ -27,11 +26,6 @@ namespace Loader
         public static void UseModels(this MapperConfigurationExpression configuration)
         {
             configuration.AddProfile(new ModelsProfile());
-        }
-
-        public static void UseEntities(this MapperConfigurationExpression configuration)
-        {
-            configuration.AddProfile(new EntitiesProfile());
         }
 
         public static void UseGateways(this MapperConfigurationExpression configuration)
