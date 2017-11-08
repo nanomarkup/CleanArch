@@ -1,7 +1,6 @@
 ﻿using Core.Entities;
 using Core.Gateways;
 using Core.Interactors;
-using Core.Models;
 using Entities;
 using Infrastructure.Context;
 using Infrastructure.Gateways;

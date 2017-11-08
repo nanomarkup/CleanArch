@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
 using Core.Interactors;
+using Services;
 
-namespace Services.Mapping
+namespace Loader.MapperProfiles
 {
     public class ServicesProfile : Profile
     {

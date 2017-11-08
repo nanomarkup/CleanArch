@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.Configuration;
-using Core.Mapping;
-using Infrastructure.Mapping;
-using Services.Mapping;
+using Loader.MapperProfiles;
 
 namespace Loader
 {

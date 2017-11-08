@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
-using Core.Gateways;
 using Core.Interactors;
 using Core.Models;
 
-namespace Infrastructure.Mapping
+namespace Loader.MapperProfiles
 {
     public class ModelsProfile : Profile
     {

@@ -3,7 +3,7 @@ using Core.Models;
 using Core.Interactors;
 using System;
 
-namespace Core.Mapping
+namespace Loader.MapperProfiles
 {
     public class InteractorsProfile : Profile
     {
