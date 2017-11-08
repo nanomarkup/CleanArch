@@ -27,12 +27,12 @@ namespace Infrastructure.Gateways
             return context.Messages.Find(id);
         }
 
-        public IQueryable<MessageModel> Retrieve(DtoMessageQueryGateway dto)
+        public IQueryable<MessageModel> Retrieve(DtoMessageGatewayQuery dto)
         {
             return context.Messages.Where(x => x.Sender == dto.Sender && x.Receiver == dto.Receiver);           
         }
 
-        public Guid Modify(DtoMessageModifiedGateway dto)
+        public Guid Modify(DtoMessageGatewayModify dto)
         {
             return Guid.Empty;
         }

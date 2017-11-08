@@ -13,7 +13,7 @@ namespace Interactors
     {
         public MessageInteractor(IServiceProvider provider) : base(provider) { }
 
-        public DtoMessageIdInteractor Send(DtoMessageSendInteractor dto)
+        public DtoMessageInteractorId Send(DtoMessageInteractorSend dto)
         {
             var model = Mapper.Map<MessageModel>(dto);
             model.Id = Guid.NewGuid();
@@ -23,27 +23,27 @@ namespace Interactors
             var message = GetService<IMessageEntity>();
             message.Changed += (sender, args) => { GetService<IMessageGateway>().Add(message.Attrs as MessageModel); };
             message.Create(model);
-            return new DtoMessageIdInteractor() { Id = message.Attrs.Id };
+            return new DtoMessageInteractorId() { Id = message.Attrs.Id };
         }
 
-        public DtoMessageInfoInteractor Read(DtoMessageReadByIdInteractor dto)
+        public DtoMessageInteractorInfo Read(DtoMessageInteractorReadById dto)
         {
-            return Mapper.Map<DtoMessageInfoInteractor>(GetService<IMessageGateway>().Retrieve(dto.Id));
+            return Mapper.Map<DtoMessageInteractorInfo>(GetService<IMessageGateway>().Retrieve(dto.Id));
         }
 
-        public IEnumerable<DtoMessageInfoInteractor> Read(DtoMessageReadInteractor dto)
+        public IEnumerable<DtoMessageInteractorInfo> Read(DtoMessageInteractorRead dto)
         {
-            return Read(Mapper.Map<DtoMessageReadByDateInteractor>(dto));
+            return Read(Mapper.Map<DtoMessageInteractorReadByDate>(dto));
         }        
 
-        public IEnumerable<DtoMessageInfoInteractor> Read(DtoMessageReadByDateInteractor dto)
+        public IEnumerable<DtoMessageInteractorInfo> Read(DtoMessageInteractorReadByDate dto)
         {
             var gw = GetService<IMessageGateway>();
-            var messages = gw.Retrieve(Mapper.Map<DtoMessageQueryGateway>(dto));
+            var messages = gw.Retrieve(Mapper.Map<DtoMessageGatewayQuery>(dto));
             if (messages == null)
-                return new List<DtoMessageInfoInteractor>();
+                return new List<DtoMessageInteractorInfo>();
             else
-                return messages.Select(x => Mapper.Map<DtoMessageInfoInteractor>(x));
+                return messages.Select(x => Mapper.Map<DtoMessageInteractorInfo>(x));
         }
     }
 }

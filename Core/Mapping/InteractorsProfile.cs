@@ -10,9 +10,9 @@ namespace Core.Mapping
         public InteractorsProfile()
         {
             // The destination type should be Interactor DTO for all maps
-            CreateMap<UserModel, DtoUserInfoInteractor>();
-            CreateMap<MessageModel, DtoMessageInfoInteractor>();            
-            CreateMap<DtoMessageReadInteractor, DtoMessageReadByDateInteractor>()
+            CreateMap<UserModel, DtoUserInteractorInfo>();
+            CreateMap<MessageModel, DtoMessageInteractorInfo>();            
+            CreateMap<DtoMessageInteractorRead, DtoMessageInteractorReadByDate>()
                 .ForMember(dest => dest.Start, opts => opts.MapFrom(src => DateTime.MinValue));            
         }
     }

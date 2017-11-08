@@ -10,8 +10,8 @@ namespace Infrastructure.Mapping
         public ModelsProfile()
         {
             // The destination type should be Model object for all maps
-            CreateMap<DtoMessageSendInteractor, MessageModel>();
-            CreateMap<DtoUserCreateInteractor, UserModel>();
+            CreateMap<DtoMessageInteractorSend, MessageModel>();
+            CreateMap<DtoUserInteractorCreate, UserModel>();
         }
     }
 }

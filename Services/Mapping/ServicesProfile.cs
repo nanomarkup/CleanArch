@@ -8,21 +8,21 @@ namespace Services.Mapping
         public ServicesProfile()
         {            
             // Destination is Interactor DTO, input
-            CreateMap<DtoServiceMessageSend, DtoMessageSendInteractor>();
-            CreateMap<DtoServiceMessageRead, DtoMessageReadInteractor>();
-            CreateMap<DtoServiceMessageReadById, DtoMessageReadByIdInteractor>();
-            CreateMap<DtoServiceMessageReadByDate, DtoMessageReadByDateInteractor>();
+            CreateMap<DtoServiceMessageSend, DtoMessageInteractorSend>();
+            CreateMap<DtoServiceMessageRead, DtoMessageInteractorRead>();
+            CreateMap<DtoServiceMessageReadById, DtoMessageInteractorReadById>();
+            CreateMap<DtoServiceMessageReadByDate, DtoMessageInteractorReadByDate>();
 
-            CreateMap<DtoServiceUserId, DtoUserIdInteractor>();
-            CreateMap<DtoServiceUserCreate, DtoUserCreateInteractor>();
-            CreateMap<DtoServiceUserModify, DtoUserModifyInteractor>();
+            CreateMap<DtoServiceUserId, DtoUserInteractorId>();
+            CreateMap<DtoServiceUserCreate, DtoUserInteractorCreate>();
+            CreateMap<DtoServiceUserModify, DtoUserInteractorModify>();
 
             // Destination is Service DTO, output
-            CreateMap<DtoMessageIdInteractor, DtoServiceMessageId>();
-            CreateMap<DtoMessageInfoInteractor, DtoServiceMessageInfo>();
+            CreateMap<DtoMessageInteractorId, DtoServiceMessageId>();
+            CreateMap<DtoMessageInteractorInfo, DtoServiceMessageInfo>();
 
-            CreateMap<DtoUserIdInteractor, DtoServiceUserId>();
-            CreateMap<DtoUserInfoInteractor, DtoServiceUserInfo>();
+            CreateMap<DtoUserInteractorId, DtoServiceUserId>();
+            CreateMap<DtoUserInteractorInfo, DtoServiceUserInfo>();
         }
     }
 }

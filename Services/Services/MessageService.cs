@@ -20,7 +20,7 @@ namespace Services
             get
             {
                 return new BaseService<DtoServiceMessageSend, DtoServiceMessageId>(x => 
-                    Mapper.Map<DtoServiceMessageId>(Provider.GetService<IMessageInteractor>().Send(Mapper.Map<DtoMessageSendInteractor>(x))));
+                    Mapper.Map<DtoServiceMessageId>(Provider.GetService<IMessageInteractor>().Send(Mapper.Map<DtoMessageInteractorSend>(x))));
             }
         }
 
@@ -29,7 +29,7 @@ namespace Services
             get
             {
                 return new BaseService<DtoServiceMessageRead, IEnumerable<DtoServiceMessageInfo>>(x => 
-                    Mapper.Map<IEnumerable<DtoServiceMessageInfo>>(Provider.GetService<IMessageInteractor>().Read(Mapper.Map<DtoMessageReadInteractor>(x))));
+                    Mapper.Map<IEnumerable<DtoServiceMessageInfo>>(Provider.GetService<IMessageInteractor>().Read(Mapper.Map<DtoMessageInteractorRead>(x))));
             }
         }
 
@@ -38,7 +38,7 @@ namespace Services
             get
             {
                 return new BaseService<DtoServiceMessageReadById, DtoServiceMessageInfo>(x => 
-                    Mapper.Map<DtoServiceMessageInfo>(Provider.GetService<IMessageInteractor>().Read(Mapper.Map<DtoMessageReadByIdInteractor>(x))));
+                    Mapper.Map<DtoServiceMessageInfo>(Provider.GetService<IMessageInteractor>().Read(Mapper.Map<DtoMessageInteractorReadById>(x))));
             }
         }
 
@@ -47,7 +47,7 @@ namespace Services
             get
             {
                 return new BaseService<DtoServiceMessageReadByDate, IEnumerable<DtoServiceMessageInfo>>(x => 
-                    Mapper.Map<IEnumerable<DtoServiceMessageInfo>>(Provider.GetService<IMessageInteractor>().Read(Mapper.Map<DtoMessageReadByDateInteractor>(x))));
+                    Mapper.Map<IEnumerable<DtoServiceMessageInfo>>(Provider.GetService<IMessageInteractor>().Read(Mapper.Map<DtoMessageInteractorReadByDate>(x))));
             }
         }  
     }

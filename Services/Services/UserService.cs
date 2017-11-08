@@ -19,7 +19,7 @@ namespace Services
             get
             {
                 return new BaseService<DtoServiceUserCreate, DtoServiceUserId>(x => 
-                    Mapper.Map<DtoServiceUserId>(Provider.GetService<IUserInteractor>().Create(Mapper.Map<DtoUserCreateInteractor>(x))));
+                    Mapper.Map<DtoServiceUserId>(Provider.GetService<IUserInteractor>().Create(Mapper.Map<DtoUserInteractorCreate>(x))));
             }
         }
         
@@ -28,7 +28,7 @@ namespace Services
             get
             {
                 return new BaseService<DtoServiceUserId, DtoServiceUserInfo>(x => 
-                    Mapper.Map<DtoServiceUserInfo>(Provider.GetService<IUserInteractor>().Retrieve(Mapper.Map<DtoUserIdInteractor>(x))));
+                    Mapper.Map<DtoServiceUserInfo>(Provider.GetService<IUserInteractor>().Retrieve(Mapper.Map<DtoUserInteractorId>(x))));
             }
         }
         
@@ -37,7 +37,7 @@ namespace Services
             get
             {
                 return new BaseService<DtoServiceUserModify, DtoServiceUserId>(x => 
-                    Mapper.Map<DtoServiceUserId>(Provider.GetService<IUserInteractor>().Modify(Mapper.Map<DtoUserModifyInteractor>(x))));
+                    Mapper.Map<DtoServiceUserId>(Provider.GetService<IUserInteractor>().Modify(Mapper.Map<DtoUserInteractorModify>(x))));
             }
         }
 
@@ -46,7 +46,7 @@ namespace Services
             get
             {
                 return new BaseService<DtoServiceUserId, DtoServiceUserId>(x => 
-                    Mapper.Map<DtoServiceUserId>(Provider.GetService<IUserInteractor>().Delete(Mapper.Map<DtoUserIdInteractor>(x))));
+                    Mapper.Map<DtoServiceUserId>(Provider.GetService<IUserInteractor>().Delete(Mapper.Map<DtoUserInteractorId>(x))));
             }
         }        
     }

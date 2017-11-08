@@ -10,7 +10,7 @@ namespace Core.Mapping
         public GatewaysProfile()
         {
             // The destination type should be Gateway DTO for all maps
-            CreateMap<DtoMessageReadByDateInteractor, DtoMessageQueryGateway>();            
+            CreateMap<DtoMessageInteractorReadByDate, DtoMessageGatewayQuery>();            
         }
     }
 }

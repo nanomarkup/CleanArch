@@ -1,8 +1,8 @@
 ﻿
 namespace Services
 {
-    public interface IServiceResponse<DtoResponse>
+    public interface IServiceResponse<Response>
     {
-        void ServiceResponse(DtoResponse dto);
+        void ServiceResponse(Response dto);
     }
 }

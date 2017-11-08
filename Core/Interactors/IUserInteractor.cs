@@ -5,21 +5,21 @@ namespace Core.Interactors
     public interface IUserInteractor
     {
         // Create a new user
-        DtoUserIdInteractor Create(DtoUserCreateInteractor dto);
+        DtoUserInteractorId Create(DtoUserInteractorCreate dto);
         // Retrieve an user
-        DtoUserInfoInteractor Retrieve(DtoUserIdInteractor id);
+        DtoUserInteractorInfo Retrieve(DtoUserInteractorId id);
         // Update an existing user by user id
-        DtoUserIdInteractor Modify(DtoUserModifyInteractor dto);
+        DtoUserInteractorId Modify(DtoUserInteractorModify dto);
         // Remove user by user id
-        DtoUserIdInteractor Delete(DtoUserIdInteractor id);
+        DtoUserInteractorId Delete(DtoUserInteractorId id);
     }
 
-    public class DtoUserIdInteractor
+    public class DtoUserInteractorId
     {
         public Guid Id { get; set; }
     }
 
-    public class DtoUserInfoInteractor
+    public class DtoUserInteractorInfo
     {
         public Guid Id { get; set; }
         public DateTime Created { get; set; }
@@ -29,14 +29,14 @@ namespace Core.Interactors
         public string Email { get; set; }
     }
 
-    public class DtoUserCreateInteractor
+    public class DtoUserInteractorCreate
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
     }
 
-    public class DtoUserModifyInteractor
+    public class DtoUserInteractorModify
     {
         public Guid Id { get; set; }
         public string FirstName { get; set; }

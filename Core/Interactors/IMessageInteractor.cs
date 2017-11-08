@@ -6,21 +6,21 @@ namespace Core.Interactors
     public interface IMessageInteractor
     {
         // Send the text message to a receiver
-        DtoMessageIdInteractor Send(DtoMessageSendInteractor dto);
+        DtoMessageInteractorId Send(DtoMessageInteractorSend dto);
         // Read a message by message Id
-        DtoMessageInfoInteractor Read(DtoMessageReadByIdInteractor dto);
+        DtoMessageInteractorInfo Read(DtoMessageInteractorReadById dto);
         // Read all messages sent between sender and receiver
-        IEnumerable<DtoMessageInfoInteractor> Read(DtoMessageReadInteractor dto);        
+        IEnumerable<DtoMessageInteractorInfo> Read(DtoMessageInteractorRead dto);        
         // Read all messages sent between sender and receiver since some date or period of date
-        IEnumerable<DtoMessageInfoInteractor> Read(DtoMessageReadByDateInteractor dto);
+        IEnumerable<DtoMessageInteractorInfo> Read(DtoMessageInteractorReadByDate dto);
     }
 
-    public class DtoMessageIdInteractor
+    public class DtoMessageInteractorId
     {
         public Guid Id { get; set; }
     }
 
-    public class DtoMessageInfoInteractor
+    public class DtoMessageInteractorInfo
     {
         public Guid Id { get; set; }
         public DateTime Created { get; set; }
@@ -35,25 +35,25 @@ namespace Core.Interactors
         }
     }
 
-    public class DtoMessageSendInteractor
+    public class DtoMessageInteractorSend
     {
         public Guid Sender { get; set; }
         public Guid Receiver { get; set; }
         public string Text { get; set; }
     }
 
-    public class DtoMessageReadInteractor
+    public class DtoMessageInteractorRead
     {
         public Guid Sender { get; set; }
         public Guid Receiver { get; set; }
     }
 
-    public class DtoMessageReadByIdInteractor
+    public class DtoMessageInteractorReadById
     {
         public Guid Id { get; set; }
     }
 
-    public class DtoMessageReadByDateInteractor
+    public class DtoMessageInteractorReadByDate
     {
         public Guid Sender { get; set; }
         public Guid Receiver { get; set; }

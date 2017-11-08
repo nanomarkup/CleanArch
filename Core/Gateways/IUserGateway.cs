@@ -3,9 +3,9 @@ using System;
 
 namespace Core.Gateways
 {
-    public interface IUserGateway : IPersistenceGateway<UserModel, DtoUserModifiedGateway, DtoUserQueryGateway> { }
+    public interface IUserGateway : IPersistenceGateway<UserModel, DtoUserGatewayModify, DtoUserGatewayQuery> { }
 
-    public class DtoUserModifiedGateway
+    public class DtoUserGatewayModify
     {
         public Guid Id { get; set; }
         public DateTime Modified { get; set; }
@@ -14,7 +14,7 @@ namespace Core.Gateways
         public string Email { get; set; }
     }
 
-    public class DtoUserQueryGateway
+    public class DtoUserGatewayQuery
     {
         
     }

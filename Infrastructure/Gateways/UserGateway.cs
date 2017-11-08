@@ -25,12 +25,12 @@ namespace Infrastructure.Gateways
             return new UserModel();
         }
 
-        public IQueryable<UserModel> Retrieve(DtoUserQueryGateway dto)
+        public IQueryable<UserModel> Retrieve(DtoUserGatewayQuery dto)
         {
             return null;
         }
 
-        public Guid Modify(DtoUserModifiedGateway dto)
+        public Guid Modify(DtoUserGatewayModify dto)
         {
             return Guid.Empty;
         }

@@ -11,7 +11,7 @@ namespace Interactors
     {
         public UserInteractor(IServiceProvider provider) : base(provider) { }
 
-        public DtoUserIdInteractor Create(DtoUserCreateInteractor dto)
+        public DtoUserInteractorId Create(DtoUserInteractorCreate dto)
         {
             var model = Mapper.Map<UserModel>(dto);
             model.Id = Guid.NewGuid();
@@ -25,15 +25,15 @@ namespace Interactors
                 GetService<IUserGateway>().Add(user.Attrs as UserModel);
             };
             user.Create(model);
-            return new DtoUserIdInteractor() { Id = user.Attrs.Id };
+            return new DtoUserInteractorId() { Id = user.Attrs.Id };
         }
 
-        public DtoUserInfoInteractor Retrieve(DtoUserIdInteractor id)
+        public DtoUserInteractorInfo Retrieve(DtoUserInteractorId id)
         {
-            return Mapper.Map<DtoUserInfoInteractor>(GetService<IUserGateway>().Retrieve(id.Id));
+            return Mapper.Map<DtoUserInteractorInfo>(GetService<IUserGateway>().Retrieve(id.Id));
         }
 
-        public DtoUserIdInteractor Modify(DtoUserModifyInteractor dto)
+        public DtoUserInteractorId Modify(DtoUserInteractorModify dto)
         {            
             // Read user from the infrastructure
             var user = GetService<IUserEntity>();
@@ -42,7 +42,7 @@ namespace Interactors
             user.Changed += (sender, args) =>
             {
                 // Modify user in the infrastructure
-                GetService<IUserGateway>().Modify(Mapper.Map<DtoUserModifiedGateway>(user));
+                GetService<IUserGateway>().Modify(Mapper.Map<DtoUserGatewayModify>(user));
             };
 
             // Update all fields
@@ -57,12 +57,12 @@ namespace Interactors
             {
                 user.EndUpdate();
             }
-            return new DtoUserIdInteractor() { Id = user.Attrs.Id };
+            return new DtoUserInteractorId() { Id = user.Attrs.Id };
         }
 
-        public DtoUserIdInteractor Delete(DtoUserIdInteractor id)
+        public DtoUserInteractorId Delete(DtoUserInteractorId id)
         {
-            return new DtoUserIdInteractor() { Id = GetService<IUserGateway>().Delete(id.Id) };
+            return new DtoUserInteractorId() { Id = GetService<IUserGateway>().Delete(id.Id) };
         }
     }
 }
